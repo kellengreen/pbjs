@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Testing</title>
-    <style>
-        p {
-            color: blue;
-            font-family: monospace;
-            border: 1px solid blue;
-        }
-        span {
-            color: aqua;
-        }
-    </style>
+    <!--<style>-->
+        <!--p {-->
+            <!--color: blue;-->
+            <!--font-family: monospace;-->
+            <!--border: 1px solid blue;-->
+        <!--}-->
+        <!--span {-->
+            <!--color: aqua;-->
+        <!--}-->
+    <!--</style>-->
 </head>
 <body>
     <!--<p>Outside</p>-->
@@ -44,38 +44,34 @@
         <!--shadow.appendChild(clone);-->
     <!--</script>-->
 
-    <template id="foo">Hello, template!</template>
-    <js-repeat ref="foo"></js-repeat>
+    <!--<template id="foo">Hello, template!</template>-->
+    <!--<js-repeat ref="foo"></js-repeat>-->
 
+    <!--<js-repeat>-->
+        <!--<template>Hello, template!</template>-->
+    <!--</js-repeat>-->
 
-    <js-repeat>
-        <template>Hello, template!</template>
-    </js-repeat>
+    <!--<js-repeat>Hello, repeat!</js-repeat>-->
 
-    <js-repeat>Hello, repeat!</js-repeat>
-
-    <js-scope id="outerScope">
-        <js-scope id="innerScope">
-            <js-bind to="val"></js-bind>
-            <js-repeat>
-                <p>Hello, world!</p>
-            </js-repeat>
-        </js-scope>
-    </js-scope>
+    <pb-scope pb-id="outerScope">
+        <pb-scope pb-id="innerScope">
+            <pb-bind pb-to="val"></pb-bind>
+            <!--<js-repeat>-->
+                <!--<p>Hello, world!</p>-->
+            <!--</js-repeat>-->
+        </pb-scope>
+    </pb-scope>
 
 <script>
 
-    function outerScope(data) {
-        data.val = 'outer';
-        console.log('outer');
-        console.dir(data);
+    function outerScope(scope) {
+        scope.val = 'outer';
     }
 
-    function innerScope(data) {
-        data.val = 'inner';
-        console.log('inner');
-        console.dir(data);
+    function innerScope(scope) {
+        scope.val = 'inner';
     }
+
 </script>
 
 <script src="bin/core.js"></script>

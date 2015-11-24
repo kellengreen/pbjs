@@ -1,39 +1,47 @@
+var PbBindElement = new Function();
+PbBindElement.prototype = Object.create(HTMLElement.prototype);
+PbBindElement.prototype.constructor = PbBindElement;
+
 /**
- * Bind
+ * Static Properties
  */
 
-var bindElem = (function() {
+PbBindElement._tagName = 'pb-bind';
+PbBindElement._attrName = 'pb-to';
 
-    var proto = Object.create(HTMLElement.prototype);
+/**
+ * Class Methods
+ */
 
-    proto.createdCallback = function() {
-        this._scopeElem = null;
-        this._setScopeElem();
-    };
+PbBindElement.prototype._init = function() {
 
-    proto.attachedCallback = function() {
+    var name = this.getAttribute(PbBindElement._attrName);
+    this._scope = PbScopeElement._getParentScope(this);
+    this.textContent = this._scope.$data[name];
+};
 
-    };
+/**
+ * Callbacks
+ */
 
-    proto.detachedCallback = function() {
-        console.log('detached');
-    };
+PbBindElement.prototype.createdCallback = function() {
+    console.log('bind__created');
+    this._scope = null;
+};
 
-    proto.attributeChangedCallback = function() {
-        console.log('changed');
-    };
+PbBindElement.prototype.attachedCallback = function() {
+    console.log('bind__attached');
+    this._init();
+};
 
-    proto._setScopeElem = function() {
-        var elem = this;
-        while (parent = elem.parentElement) {
-            if (parent instanceof ScopeElem) {
-                elem._scopeElem = parent;
-                break;
-            }
-            elem = parent;
-        }
-    };
+PbBindElement.prototype.detachedCallback = function() {
+    console.log('bind__detached');
+    this._scope = null;
+    this.textContent = null;
+};
 
-    return document.registerElement('u-bind', {prototype: proto});
+PbBindElement.prototype.attributeChangedCallback = function() {
+    //console.log('attrChanged');
+};
 
-})();
+document.registerElement(PbBindElement._tagName, {prototype: PbBindElement.prototype});

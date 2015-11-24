@@ -12,35 +12,9 @@ function unescapeHtml(escapedStr) {
     return child ? child.nodeValue : '';
 }
 
-function register(options,name, Element, created, attached, detached, changed) {
-    var proto = Object.create(Element.prototype);
-    proto.createdCallback = options.created || new Function;
-    proto.attachedCallback = attached;
-    proto.detachedCallback = detached;
-    proto.attributeChangedCallback = changed;
-    document.registerElement(options.name, {prototype: proto});
+function PbElement() {
+    HTMLElement.call(this);
 }
 
-//function kwfn(fn, required, optional) {
-//    return function(kwargs) {
-//        for (var prop in kwargs) {
-//            if (kwargs.hasOwnProperty(prop)) {
-//
-//            }
-//        }
-//        return fn(kwargs)
-//    }
-//}
-//
-//
-//var f = kwfn(function(options) {
-//
-//}, new Set()
-//    .add('name')
-//    .add('Element')
-//, {
-//    created: new Function,
-//    attached: new Function,
-//    detached: new Function,
-//    changed: new Function
-//});
+PbElement.prototype = Object.create(HTMLElement.prototype);
+PbElement.prototype.constructor = PbElement;
