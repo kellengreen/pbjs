@@ -2,63 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Testing</title>
-    <!--<style>-->
-        <!--p {-->
-            <!--color: blue;-->
-            <!--font-family: monospace;-->
-            <!--border: 1px solid blue;-->
-        <!--}-->
-        <!--span {-->
-            <!--color: aqua;-->
-        <!--}-->
-    <!--</style>-->
+    <title>pb.js</title>
 </head>
 <body>
-    <!--<p>Outside</p>-->
-    <!--<p id="shadow"><span>Inside</span></p>-->
-
-    <!--<template id="template">-->
-        <!--<style>-->
-            <!--::content span {-->
-                <!--color: green;-->
-            <!--}-->
-            <!--/*:host {*/-->
-                <!--/*border: 1px solid red;*/-->
-            <!--/*}*/-->
-            <!--/*p {*/-->
-                <!--/*color: red;*/-->
-                <!--/*border: 1px solid red;*/-->
-            <!--/*}*/-->
-            <!--/*span {*/-->
-                <!--/*color: darkorange;*/-->
-            <!--/*}*/-->
-        <!--</style>-->
-        <!--<p><content></content></p>-->
-    <!--</template>-->
-
-    <!--<script>-->
-        <!--var host = document.querySelector('#shadow');-->
-        <!--var shadow = host.createShadowRoot();-->
-        <!--var clone = document.importNode(template.content, true);-->
-        <!--shadow.appendChild(clone);-->
-    <!--</script>-->
-
-    <!--<template id="foo">Hello, template!</template>-->
-    <!--<js-repeat ref="foo"></js-repeat>-->
-
-    <!--<js-repeat>-->
-        <!--<template>Hello, template!</template>-->
-    <!--</js-repeat>-->
-
-    <!--<js-repeat>Hello, repeat!</js-repeat>-->
-
     <pb-scope pb-id="outerScope">
         <pb-scope pb-id="innerScope">
             <pb-bind pb-to="val"></pb-bind>
-            <!--<js-repeat>-->
-                <!--<p>Hello, world!</p>-->
-            <!--</js-repeat>-->
         </pb-scope>
     </pb-scope>
 
@@ -75,9 +24,9 @@
 </script>
 
 <script src="bin/core.js"></script>
-<script src="bin/tags/scope.js"></script>
-<script src="bin/tags/bind.js"></script>
-<script src="bin/tags/repeat.js"></script>
+<script src="bin/tags/pb-scope.js"></script>
+<script src="bin/tags/pb-bind.js"></script>
+<script src="bin/tags/pb-repeat.js"></script>
 
 </body>
 </html>
