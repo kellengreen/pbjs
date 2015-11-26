@@ -1,46 +1,31 @@
+/**
+ * PbScope
+ */
+
 function PbScope(elem) {
-    this.elem = elem;
+    this.Super.call(this, elem);
     this.$data = {};
     this._data = {};
-    this.parent = null;
     this.children = new Set();
 }
 
-PbScope.tagName = 'pb-scope';
-PbScope.Element = HTMLElement;
-PbScope.attrId = 'pb-id';
-
-PbScope.getParent = function(root) {
-    var parent = root.parentNode;
-    while (parent) {
-        if (parent.$pb instanceof PbScope) {
-            return parent.$pb;
+PbScope.prototype = pb.inherit(PbScope, PbBase);
+PbScope.prototype.tagName = 'pb-scope';
+PbScope.prototype.attrs = new Map([
+    ['pg-id', function(val) {
+        var fn = window[val];
+        if (typeof fn === 'function') {
+            throw this('Unable to initialize scope', val);
         }
-        parent = parent.parentNode;
-    }
-    return null;
-};
-
-PbScope.getChildren = function(root) {
-    var children = new Set();
-    var elems = root.querySelectorAll(PbScope.tagName);
-    for (var i = 0, elem; elem = elems[i]; i++) {
-        children.add(elem.$pb);
-    }
-    return children;
-};
+        fn(this.$data);
+    }]
+]);
 
 PbScope.prototype.attached = function() {
 
-    var id = this.elem.getAttribute(PbScope.attrId),
-        fn = window[id];
-
-    if (typeof fn !== 'function') {
-        throw 'Unable to initialize scope function: ' + id;
-    }
-
-    this.parent = PbScope.getParent(this.elem);
-    this.children = PbScope.getChildren(this.elem);
+    this.setId();
+    this.setParent();
+    this.setChildren();
 
     fn(this.$data);
 };
@@ -62,12 +47,26 @@ PbScope.prototype.detached = function() {
     this.children.clear();
 };
 
-PbScope.prototype.attrChanged = function() {
-
+PbScope.prototype.setParent = function() {
+    console.log(this);
+    var parent = this.elem.parentNode;
+    while (parent) {
+        console.dir(parent);
+        if (parent.$pb instanceof PbScope) {
+            this.parent = parent.$pb;
+            break;
+        }
+        parent = parent.parentNode;
+    }
 };
 
-PbScope.prototype.attrChanged = function() {
-
+PbScope.prototype.setChildren = function() {
+    var elems = this.elem.querySelectorAll(PbScope.prototype.tagName);
+    for (var i = 0, child; child = elems[i]; i++) {
+        if (child.$pb instanceof PbScope) {
+            this.children.add(child.$pb);
+        }
+    }
 };
 
 pb.register(PbScope);

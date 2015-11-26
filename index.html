@@ -7,7 +7,8 @@
 <body>
     <pb-scope pb-id="outerScope">
         <pb-scope pb-id="innerScope">
-            <pb-bind pb-to="val"></pb-bind>
+            <pb-bind pb-id="val"></pb-bind>
+            <pb-csv pb-id="csv"></pb-csv>
         </pb-scope>
     </pb-scope>
 
@@ -24,6 +25,7 @@
 </script>
 
 <script src="bin/core.js"></script>
+<script src="bin/tags/pb-base.js"></script>
 <script src="bin/tags/pb-scope.js"></script>
 <script src="bin/tags/pb-bind.js"></script>
 <script src="bin/tags/pb-repeat.js"></script>

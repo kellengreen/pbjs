@@ -1,25 +1,11 @@
-function escapeHtml(str) {
-    var elem = document.createElement('p');
-    elem.appendChild(document.createTextNode(str));
-    return elem.innerHTML;
-}
-
-// UNSAFE with unsafe strings; only use on previously-escaped ones!
-function unescapeHtml(escapedStr) {
-    var div = document.createElement('div');
-    div.innerHTML = escapedStr;
-    var child = div.childNodes[0];
-    return child ? child.nodeValue : '';
-}
-
 var pb = {};
 pb.register = function(Pb) {
 
-    proto = Object.create(Pb.Element.prototype);
+    proto = Object.create(Pb.prototype.Element.prototype);
 
     proto.createdCallback = function() {
         this.$pb = new Pb(this);
-        //this.$pb.created();
+        this.$pb.created();
     };
 
     proto.attachedCallback = function() {
@@ -30,39 +16,30 @@ pb.register = function(Pb) {
         this.$pb.detached();
     };
 
-    proto.attributeChangedCallback = function() {
-        this.$pb.attrChanged();
+    proto.attributeChangedCallback = function(attr, oldVal, newVal) {
+        this.$pb.attrChanged(attr, oldVal, newVal);
     };
 
-    return document.registerElement(Pb.tagName, {prototype: proto});
+    return document.registerElement(Pb.prototype.tagName, {prototype: proto});
 };
 
-/*
+pb.inherit = function(Pb, PbSuper) {
+    Pb.prototype = Object.create(PbSuper.prototype);
+    Pb.prototype.constructor = Pb;
+    Pb.prototype.Super = PbSuper;
+    return Pb.prototype;
+};
 
-function Pb(elem) {
-    console.log('construct');
-    this.elem = elem;
+function PbAttr() {
+    this.val;
+    this.required = False;
+    this.fn = new Function();
 }
 
-Pb.tagName = 'pb-base';
-Pb.Element = HTMLElement;
 
-Pb.prototype.created = function() {
-    console.log('created');
-};
-
-Pb.prototype.attached = function() {
-    console.log('attached');
-};
-
-Pb.prototype.detached = function() {
-    console.log('detached');
-};
-
-Pb.prototype.attrChanged = function() {
-    console.log('attrChanged');
-};
-
-pb.register(Pb);
-
-*/
+//pb.new = function(constructor, Super) {
+//  return function() {
+//
+//      var Pb = new constructor();
+//  }
+//};

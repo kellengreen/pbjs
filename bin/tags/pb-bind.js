@@ -1,31 +1,39 @@
+/**
+ * PbBind
+ */
+
 function PbBind(elem) {
-    this.elem = elem;
-    this.parent = null;
+    this.Super.call(this, elem);
 }
 
-PbBind.tagName = 'pb-bind';
-PbBind.Element = HTMLElement;
-PbBind.attrName = 'pb-to';
+PbBind.prototype = pb.inherit(PbBind, PbBase);
+PbBind.prototype.tagName = 'pb-bind';
 
 PbBind.prototype.attached = function() {
-    var name = this.elem.getAttribute(PbBind.attrName);
-    this.parent = PbScope.getParent(this.elem);
-    this.write(this.parent.$data[name]);
+    PbScope.prototype.setParent.call(this);
+    this.write(this.parent.$data[this.id]);
 };
 
 PbBind.prototype.detached = function() {
-    this.parentScope = null;
+    this.parent = null;
     this.elem.textContent = null;
 };
 
-PbBind.prototype.attrChanged = function() {
-    console.log('attrChanged');
+PbBind.prototype.setId = function() {
+    this.Super.prototype.setId.call(this);
+    this.parent.$data[this.id];
+};
+
+PbBind.prototype.clean = function(val) {
+    if (val === undefined) {
+        throw 'Unable to get property from parent scope: ' + this.id;
+    }
+
+    return val;
 };
 
 PbBind.prototype.write = function(val) {
-    var elem = document.createElement('p');
-    elem.appendChild(document.createTextNode(val));
-    this.elem.textContent = elem.innerHTML;
+    this.elem.textContent = this.clean(val);
 };
 
 pb.register(PbBind);
