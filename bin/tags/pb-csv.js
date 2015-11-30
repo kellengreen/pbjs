@@ -1,3 +1,5 @@
+"use strict";
+
 function PbCsv(elem) {
     PbBind(this, elem);
 }

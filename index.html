@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>pb.js</title>
 </head>
-<body>
+<body ABC="" foo-bar="BAR">
     <pb-scope pb-id="outerScope">
         <pb-scope pb-id="innerScope">
             <pb-bind pb-id="val"></pb-bind>
@@ -13,22 +13,39 @@
     </pb-scope>
 
 <script>
+    "use strict";
 
-    function outerScope(scope) {
-        scope.val = 'outer';
+    class A {
+        constructor() {
+            this.a = 'A';
+        }
+
+        static b() {
+            console.log('b');
+        };
+
+        static get Element() {return HTMLElement}
+
     }
 
-    function innerScope(scope) {
-        scope.val = 'inner';
-    }
+    var a = new A();
+    console.log(A.Element);
+//
+//    function outerScope(scope) {
+//        scope.val = 'outer';
+//    }
+//
+//    function innerScope(scope) {
+//        scope.val = 'inner';
+//    }
 
 </script>
 
-<script src="bin/core.js"></script>
-<script src="bin/tags/pb-base.js"></script>
-<script src="bin/tags/pb-scope.js"></script>
-<script src="bin/tags/pb-bind.js"></script>
-<script src="bin/tags/pb-repeat.js"></script>
+<!--<script src="bin/core.js"></script>-->
+<!--<script src="bin/tags/pb-base.js"></script>-->
+<!--<script src="bin/tags/pb-scope.js"></script>-->
+<!--<script src="bin/tags/pb-bind.js"></script>-->
+<!--<script src="bin/tags/pb-repeat.js"></script>-->
 
 </body>
 </html>
