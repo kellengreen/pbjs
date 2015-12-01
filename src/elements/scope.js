@@ -1,55 +1,35 @@
-/**
- * PbScope
- */
-
-class PbScope extends PbBase {
+pb.PbScope = class extends pb.PbBase {
 
     constructor(elem) {
         super(elem);
         this.data = {};
-        this.children = new Set();
-
+        this.dependants = new Set();
     }
 
     attached() {
-        this.setParent();
-        this.setChildren();
+        this.setDependants();
         super.attached();
     }
 
     detached() {
 
-        // update parent
-        if (this.parent) {
-            this.parent.children.remove(this.elem);
-        }
-
-        // update children
-        this.children.forEach(function(elem) {
-            elem.parent = this.parent;
-        }, this);
+        // update dependants
+        this.dependants.forEach(function(pbe) {
+            pbe.setProvider();
+        }, pbe);
 
         // update self
-        this.parent = null;
-        this.children.clear();
+        this.provider = null;
+        this.dependants.clear();
+
+        super.detached();
     }
 
-    setParent() {
-        var parent = this.elem.parentNode;
-        while (parent) {
-            if (parent[pb.symbol] instanceof PbScope) {
-                this.parent = parent[pb.symbol];
-                break;
-            }
-            parent = parent.parentNode;
-        }
-    }
-
-    setChildren() {
-        var elems = this.elem.querySelectorAll(PbScope.prototype.tagName);
+    setDependants() {
+        var elems = this.elem.querySelectorAll(pb.PbScope.tagName);
         for (var i = 0, child; child = elems[i]; i++) {
-            if (child[pb.symbol] instanceof PbScope) {
-                this.children.add(child[pb.symbol]);
+            if (child[pb.symbol] instanceof pb.PbScope) {
+                this.dependants.add(child[pb.symbol]);
             }
         }
     }
@@ -62,36 +42,8 @@ class PbScope extends PbBase {
         fn(this.data);
     }
 
-}
-
-PbScope.prototype.detached = function() {
-
-
 };
 
-PbScope.prototype.setParent = function() {
-    console.log(this);
-    var parent = this.elem.parentNode;
-    while (parent) {
-        console.dir(parent);
-        if (parent.$pb instanceof PbScope) {
-            this.parent = parent.$pb;
-            break;
-        }
-        parent = parent.parentNode;
-    }
-};
-
-PbScope.prototype.setChildren = function() {
-    var elems = this.elem.querySelectorAll(PbScope.prototype.tagName);
-    for (var i = 0, child; child = elems[i]; i++) {
-        if (child[pb.symbol] instanceof PbScope) {
-            this.children.add(child[pb.symbol]);
-        }
-    }
-};
-
-PbScope.Element = HTMLElement;
-PbScope.tagName = 'pb-scope';
-
-pb.register(PbScope);
+pb.PbScope.Element = HTMLElement;
+pb.PbScope.tagName = 'pb-scope';
+pb.register(pb.PbScope);

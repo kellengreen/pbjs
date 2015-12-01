@@ -1,40 +1,47 @@
-/**
- * PbBind
- */
+pb.PbBind = class extends pb.PbBase {
 
-function PbBind(elem) {
-    this.Super.call(this, elem);
-}
-
-PbBind.prototype = pb.inherit(PbBind, PbBase);
-PbBind.prototype.tagName = 'pb-bind';
-
-PbBind.prototype.attached = function() {
-    PbScope.prototype.setParent.call(this);
-    this.write(this.parent.$data[this.id]);
-};
-
-PbBind.prototype.detached = function() {
-    this.parent = null;
-    this.elem.textContent = null;
-};
-
-PbBind.prototype.setId = function() {
-    this.Super.prototype.setId.call(this);
-    this.parent.$data[this.id];
-};
-
-PbBind.prototype.clean = function(val) {
-    if (val === undefined) {
-        throw 'Unable to get property from parent scope: ' + this.id;
+    constructor(elem) {
+        super(elem);
+        this.provider = null;
     }
 
-    return val;
+    attached() {
+        this.setProvider();
+        super.attached();
+    }
+
+    detached() {
+        this.provider = null;
+        this.elem.textContent = null;
+    }
+
+    draw(val) {
+        this.elem.textContent = val;
+    }
+
+    setProvider() {
+        var elem = this.elem.parentNode;
+        while (elem) {
+            var pbe = elem[pb.symbol];
+            if (pbe instanceof $.PbScope) {
+                this.provider = elem[$.symbol];
+                break;
+            }
+            parent = parent.parentNode;
+        }
+        this.error('No parent scope found in DOM');
+    }
+
+    pgIdChanged(key) {
+        var val = this.provider.data[key];
+        if (val === undefined) {
+            this.error('Unable to get property from parent scope');
+        }
+        this.draw(val);
+    }
+
 };
 
-PbBind.prototype.write = function(val) {
-    this.elem.textContent = this.clean(val);
-};
-
-pb.register(PbBind);
-
+pb.PbBind.Element = HTMLElement;
+pb.PbBind.tagName = 'pb-bind';
+pb.register(pb.PbBind);

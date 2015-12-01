@@ -5,28 +5,75 @@
     <title>pb.js</title>
 </head>
 <body ABC="" foo-bar="BAR">
-    <pb-scope pb-id="outerScope">
-        <pb-scope pb-id="innerScope">
-            <pb-bind pb-id="val"></pb-bind>
-            <pb-csv pb-id="csv"></pb-csv>
-        </pb-scope>
+    <!--<pb-scope pb-id="outerScope">-->
+        <!--<pb-scope pb-id="innerScope">-->
+            <!--<pb-bind pb-id="val"></pb-bind>-->
+            <!--<pb-csv pb-id="csv"></pb-csv>-->
+        <!--</pb-scope>-->
+    <!--</pb-scope>-->
+
+    <pb-input pb-ctrl="searchFilter" pb-id="query"></pb-input>
+
+    <pb-repeat pb-id="activeFilters" pb-model="">
+        <template>
+            <pb-bind pg-id=""></pb-bind>
+            <pb-bind pb-id=""></pb-bind>
+            <pg-base>X</pg-base>
+        </template>
+    </pb-repeat>
+
+    <pb-scope pb-id="searchPage">
+
+        <div>
+            <p>Products Supported</p>
+            <pb-repeat pg-id="searchFilters.products">
+                <template>
+                    <pb-bind pg-id="val" pg-val=""></pb-bind>
+                </template>
+            </pb-repeat>
+        </div>
+
     </pb-scope>
 
 <script>
-    "use strict";
+    'use strict';
 
-//
-//    function outerScope(scope) {
-//        scope.val = 'outer';
-//    }
-//
-//    function innerScope(scope) {
-//        scope.val = 'inner';
-//    }
+
+
+    var pbMap = new PbMap([
+        ['foo', 'FOO'],
+        ['bar', 'BAR']
+    ]);
+    console.dir(pbMap);
+    console.log(pbMap.get('bar'));
+
+    function searchPage(scope) {
+        scope.searchFilters = {
+            'product': new Map([
+                ['enterprise', 'Splunk Enterprise'],
+                ['cloud', 'Splunk Cloud'],
+                ['hunk', 'Hunk']
+            ]),
+
+            'version': new Set([
+                '6.0',
+                '6.1',
+                '6.2'
+            ])
+        };
+        scope.activeFilters = {};
+        scope.results = [];
+    }
+
+    function searchResults(scope) {
+        scope.val = 'outer';
+    }
+
+    function searchFilters(scope) {
+        scope.val = 'inner';
+    }
 
 </script>
-
-<script src="src/pb.js"></script>
-
+<script src="bin/pb.js"></script>
 </body>
 </html>

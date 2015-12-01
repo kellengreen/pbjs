@@ -1,19 +1,50 @@
-var proto = Object.create(HTMLElement.prototype);
+pb.PbRepeat = class extends pb.PbBase {
 
-proto.createdCallback = function() {
+    constructor(elem) {
+        super(elem);
+
+        this.provider = null;
+        this.dependants = new Set();
+    }
+
+    attached() {
+        this.setDependants();
+        super.attached();
+    }
+
+    detached() {
+
+        // update dependants
+        this.dependants.forEach(function(pbe) {
+            pbe.setProvider();
+        }, pbe);
+
+        // update self
+        this.provider = null;
+        this.dependants.clear();
+
+        super.detached();
+    }
+
+    setDependants() {
+        var elems = this.elem.querySelectorAll(pb.PbScope.tagName);
+        for (var i = 0, child; child = elems[i]; i++) {
+            if (child[pb.symbol] instanceof pb.PbScope) {
+                this.dependants.add(child[pb.symbol]);
+            }
+        }
+    }
+
+    pbIdChanged(val) {
+        var fn = window[val];
+        if (typeof fn === 'function') {
+            this.error('Unable to initialize scope', val);
+        }
+        fn(this.data);
+    }
 
 };
 
-proto.attachedCallback = function() {
-
-};
-
-proto.detachedCallback = function() {
-
-};
-
-proto.attributeChangedCallback = function() {
-
-};
-
-document.registerElement('js-repeat', {prototype: proto});
+pb.PbScope.Element = HTMLElement;
+pb.PbScope.tagName = 'pb-scope';
+pb.register(pb.PbScope);

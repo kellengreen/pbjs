@@ -2,13 +2,13 @@ var gulp = require('gulp');
 var watch = require('gulp-watch');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
-var concat = require('gulp-concat');
+var include = require('gulp-include');
 
 var version = '0.0.0';
 
-function concatTask() {
-    gulp.src(['src/core.js', 'src/elements/*.js'])
-        .pipe(concat('pb.' + version + '.js'))
+function buildTask() {
+    gulp.src('src/pb.js')
+        .pipe(include())
         .pipe(gulp.dest('bin'));
 }
 
@@ -22,11 +22,10 @@ function compressTask() {
 }
 
 function watchTask() {
-    gulp.watch('./src/**/*.js', ['concat']);
+    gulp.watch('./src/**/*.js', ['build']);
 }
-
 
 gulp.task('watch', watchTask);
 gulp.task('compress', compressTask);
-gulp.task('concat', concatTask);
+gulp.task('build', buildTask);
 
