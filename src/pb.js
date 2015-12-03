@@ -37,12 +37,28 @@ class PbMap extends Map {
         super.set(key, val);
     }
 
+    setSilent(key, val) {
+        super.set();
+    }
+
     delete(key) {
         super.delete(key);
     }
 
     clear() {
         super.clear();
+    }
+
+    static json(val) {
+        function parse(obj) {
+            const map = PbMap();
+            for (var key of obj) {
+                var val = obj[key];
+                map.setSilent(key, typeof val === 'object' ? parse(val) : val);
+            }
+            return map;
+        }
+        return parse(JSON.parse(val));
     }
 }
 
@@ -65,6 +81,8 @@ class PbSet extends Set {
         super.clear();
     }
 }
+
+
 
 //=include elements/base.js
 //=include elements/scope.js
