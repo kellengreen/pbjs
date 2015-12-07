@@ -39,7 +39,6 @@ pb.PbBind = class extends pb.PbBase {
         }
         this.draw(val);
     }
-
 };
 
 pb.PbBind.Element = HTMLElement;

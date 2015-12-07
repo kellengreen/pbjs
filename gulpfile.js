@@ -22,6 +22,7 @@ function compressTask() {
 }
 
 function watchTask() {
+    buildTask();
     gulp.watch('./src/**/*.js', ['build']);
 }
 

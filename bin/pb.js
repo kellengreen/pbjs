@@ -1,129 +1,223 @@
 "use strict";
+const pb = {};
+/**
+ *
+ */
 
-var pb = {};
+pb.Map = class extends Map {
 
-pb.symbol = Symbol('pb');
+    /**
+     * Builtin Methods
+     */
 
-pb.register = function(Pb) {
+    constructor(iterable, nameSpace) {
+        super(iterable);
+        this.parent = 'P';
+    }
 
-    proto = Object.create(Pb.Element.prototype);
+    set(key, val) {
+        super.set(key, val);
+        this.$onSet(key, val);
+    }
 
-    proto.createdCallback = function () {
-        this[pb.symbol] = new Pb(this);
-        this[pb.symbol].created();
-    };
+    delete(key) {
+        super.delete(key);
+        this.$onDelete(key);
+    }
 
-    proto.attachedCallback = function () {
-        this[pb.symbol].attached();
-    };
+    clear() {
+        super.clear();
+        this.$onClear();
+    }
 
-    proto.detachedCallback = function () {
-        this[pb.symbol].detached();
-    };
+    /**
+     * Additional Methods
+     */
 
-    proto.attributeChangedCallback = function (attr, oldVal, newVal) {
-        this[pb.symbol].attrChanged(attr, newVal);
-    };
+    $onSet(key, val) {
 
-    return document.registerElement(Pb.tagName, {prototype: proto});
+    }
+
+    $onDelete(key) {
+
+    }
+
+    $onClear() {
+
+    }
+
+    $setSilent(key, val) {
+        super.set(key, val);
+    }
+
+    $toStr(val) {
+
+    }
+
+    /**
+     * Static Methods
+     */
+
+    static $fromObj(obj) {
+        /**
+         *
+         */
+        var pbMap = new PbMap();
+        for (var key of Object.keys(obj)) {
+            var val = typeof obj[key] === 'object' ? PbMap.fromObj(obj[key]) : obj[key];
+            pbMap.set(key, val);
+        }
+        return pbMap;
+    }
+
+    static $fromStr(str) {
+        /**
+         *
+         */
+        var obj = JSON.parse(str);
+        return PbMap.fromObj(obj);
+    }
+};
+/**
+ *
+ */
+
+pb.Set = class extends Set {
+    /**
+     *
+     */
+
+    constructor(root, iterable) {
+        /**
+         *
+         */
+        super(iterable);
+        this.parent = 'P';
+    }
+
+    add(val) {
+        /**
+         *
+         */
+        super.add(val);
+    }
+
+    delete(key) {
+        /**
+         *
+         */
+        super.delete(key);
+    }
+
+    clear() {
+        /**
+         *
+         */
+        super.clear();
+    }
 };
 
 /**
- * PbBase Class
+ * WebComponent Callbacks
  */
-pb.PbScope = class {
 
-    constructor(elem) {
-        this.elem = elem;
-        this.provider = null;
-    }
+pb.Base = class extends HTMLElement {
 
-    created() {
+    /**
+     * WebComponent Callbacks
+     */
 
-    }
+    createdCallback() {
+        /**
+         *
+         */
+    };
 
-    attached() {
+    attachedCallback() {
+        /**
+         *
+         */
 
         // exec attribute changed callbacks
         for (var i = 0; i < this.elem.attributes.length; i++) {
             var attr = this.elem.attributes[i];
             this.attrChanged(attr.name, attr.value);
         }
+    };
 
-        this.setProvider();
-    }
+    detachedCallback() {
+        /**
+         *
+         */
+    };
 
-    detached() {
-
-    }
-
-    attrChanged(name, val) {
-        var fnName = name.replace(/-([a-z])/ig, function(m) {
+    attributeChangedCallback(attr, oldVal, newVal) {
+        /**
+         *
+         */
+        var fnName = '$' + name.replace(/-([a-z])/ig, function(m) {
                 return m[1].toUpperCase();
             }) + 'Changed',
-            fn = this[fnName];
+            fnObj = this[fnName];
 
-        if (typeof fn === 'function') {
-            fn(val);
+        if (typeof fnObj === 'function') {
+            fnObj(val);
         }
+    };
+
+    /**
+     * Extended Methods
+     */
+
+    $error() {
+        /**
+         *
+         */
+        throw this + ' > ' + arguments.join(' > ');
     }
 
-    setProvider() {
-        var parent = this.elem.parentNode;
-        while (parent) {
-            if (parent[pb.symbol] instanceof PbScope) {
-                this.provider = parent[pb.symbol];
-                break;
-            }
-            parent = parent.parentNode;
-        }
-    }
+    /**
+     * Static Methods
+     */
 
-    error(msg, val) {
-        throw msg + ': ' + val + ' (' + this + ')';
+    static $register(name) {
+        /**
+         *
+         */
+        document.registerElement(name, {prototype: this.prototype});
     }
 };
-
-/**
- * PbScope
- */
 
 pb.PbScope = class extends pb.PbBase {
 
     constructor(elem) {
         super(elem);
-        this.data = {};
-        this.dependants = new Set();
 
     }
 
     attached() {
-        super.attached();
         this.setDependants();
+        super.attached();
     }
 
     detached() {
-        super.attached();
 
-        // update parent
-        if (this.parent) {
-            this.parent.children.remove(this.elem);
-        }
-
-        // update children
-        this.children.forEach(function(elem) {
-            elem.parent = this.parent;
-        }, this);
+        // update dependants
+        this.dependants.forEach(function(pbe) {
+            pbe.setProvider();
+        }, pbe);
 
         // update self
-        this.parent = null;
-        this.children.clear();
+        this.provider = null;
+        this.dependants.clear();
+
+        super.detached();
     }
 
     setDependants() {
-        var elems = this.elem.querySelectorAll(PbScope.tagName);
+        var elems = this.elem.querySelectorAll(pb.PbScope.tagName);
         for (var i = 0, child; child = elems[i]; i++) {
-            if (child[pb.symbol] instanceof PbScope) {
+            if (child[pb.symbol] instanceof pb.PbScope) {
                 this.dependants.add(child[pb.symbol]);
             }
         }
@@ -139,20 +233,20 @@ pb.PbScope = class extends pb.PbBase {
 
 };
 
-PbScope.Element = HTMLElement;
-PbScope.tagName = 'pb-scope';
+pb.PbScope.Element = HTMLElement;
+pb.PbScope.tagName = 'pb-scope';
+pb.register(pb.PbScope);
 
-pb.register(PbScope);
+pb.PbBind = class extends pb.PbBase {
 
-/**
- * PbBind
- */
-
-class PbBind extends pb.PbBase {
+    constructor(elem) {
+        super(elem);
+        this.provider = null;
+    }
 
     attached() {
+        this.setProvider();
         super.attached();
-        this.draw(this.parent.$data[this.id]);
     }
 
     detached() {
@@ -160,25 +254,33 @@ class PbBind extends pb.PbBase {
         this.elem.textContent = null;
     }
 
-    clean(val) {
-        if (val === undefined) {
-            throw 'Unable to get property from parent scope: ' + this.id;
+    draw(val) {
+        this.elem.textContent = val;
+    }
+
+    setProvider() {
+        var elem = this.elem.parentNode;
+        while (elem) {
+            var pbe = elem[pb.symbol];
+            if (pbe instanceof $.PbScope) {
+                this.provider = elem[$.symbol];
+                break;
+            }
+            parent = parent.parentNode;
         }
-        return val;
+        this.error('No parent scope found in DOM');
     }
 
-    draw() {
-        this.elem.textContent = this.clean(val)
+    pgIdChanged(key) {
+        var val = this.provider.data[key];
+        if (val === undefined) {
+            this.error('Unable to get property from parent scope');
+        }
+        this.draw(val);
     }
+};
 
-    pgIdChanged(val) {
-        this.Super.prototype.setId.call(this);
-        this.parent.$data[this.id];
-    }
-}
-
-PbScope.Element = HTMLElement;
-PbScope.tagName = 'pb-bind';
-
-pb.register(PbBind);
+pb.PbBind.Element = HTMLElement;
+pb.PbBind.tagName = 'pb-bind';
+pb.register(pb.PbBind);
 

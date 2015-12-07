@@ -34,44 +34,17 @@
         </div>
 
     </pb-scope>
-
+    <pb-base>Hi</pb-base>
 <script>
     'use strict';
 
-
-
-    var pbMap = new PbMap([
-        ['foo', 'FOO'],
-        ['bar', 'BAR']
-    ]);
-    console.dir(pbMap);
-    console.log(pbMap.get('bar'));
-
-    function searchPage(scope) {
-        scope.searchFilters = {
-            'product': new Map([
-                ['enterprise', 'Splunk Enterprise'],
-                ['cloud', 'Splunk Cloud'],
-                ['hunk', 'Hunk']
-            ]),
-
-            'version': new Set([
-                '6.0',
-                '6.1',
-                '6.2'
-            ])
-        };
-        scope.activeFilters = {};
-        scope.results = [];
-    }
-
-    function searchResults(scope) {
-        scope.val = 'outer';
-    }
-
-    function searchFilters(scope) {
-        scope.val = 'inner';
-    }
+//    function searchResults(scope) {
+//        scope.val = 'outer';
+//    }
+//
+//    function searchFilters(scope) {
+//        scope.val = 'inner';
+//    }
 
 </script>
 <script src="bin/pb.js"></script>

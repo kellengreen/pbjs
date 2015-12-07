@@ -2,8 +2,7 @@ pb.PbScope = class extends pb.PbBase {
 
     constructor(elem) {
         super(elem);
-        this.data = {};
-        this.dependants = new Set();
+
     }
 
     attached() {

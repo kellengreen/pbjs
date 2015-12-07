@@ -1,39 +1,70 @@
-pb.PbBase = class {
+/**
+ * WebComponent Callbacks
+ */
 
-    constructor(elem) {
-        this.elem = elem;
-    }
+pb.Base = class extends HTMLElement {
 
-    created() {
+    /**
+     * WebComponent Callbacks
+     */
 
-    }
+    createdCallback() {
+        /**
+         *
+         */
+    };
 
-    attached() {
+    attachedCallback() {
+        /**
+         *
+         */
 
         // exec attribute changed callbacks
         for (var i = 0; i < this.elem.attributes.length; i++) {
             var attr = this.elem.attributes[i];
             this.attrChanged(attr.name, attr.value);
         }
+    };
 
-    }
+    detachedCallback() {
+        /**
+         *
+         */
+    };
 
-    detached() {
-
-    }
-
-    attrChanged(name, val) {
-        var fnName = name.replace(/-([a-z])/ig, function(m) {
+    attributeChangedCallback(attr, oldVal, newVal) {
+        /**
+         *
+         */
+        var fnName = '$' + name.replace(/-([a-z])/ig, function(m) {
                 return m[1].toUpperCase();
             }) + 'Changed',
-            fn = this[fnName];
+            fnObj = this[fnName];
 
-        if (typeof fn === 'function') {
-            fn(val);
+        if (typeof fnObj === 'function') {
+            fnObj(val);
         }
+    };
+
+    /**
+     * Extended Methods
+     */
+
+    $error() {
+        /**
+         *
+         */
+        throw this + ' > ' + arguments.join(' > ');
     }
 
-    error() {
-        throw this + ' > ' + arguments.join(' > ');
+    /**
+     * Static Methods
+     */
+
+    static $register(name) {
+        /**
+         *
+         */
+        document.registerElement(name, {prototype: this.prototype});
     }
 };
