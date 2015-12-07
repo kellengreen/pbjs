@@ -2,7 +2,7 @@
  * WebComponent Callbacks
  */
 
-pb.Base = class extends HTMLElement {
+pb.BaseElement = class extends HTMLElement {
 
     /**
      * WebComponent Callbacks
@@ -20,17 +20,17 @@ pb.Base = class extends HTMLElement {
          */
 
         // exec attribute changed callbacks
-        for (var i = 0; i < this.elem.attributes.length; i++) {
-            var attr = this.elem.attributes[i];
-            this.attrChanged(attr.name, attr.value);
+        for (var i = 0; i < this.attributes.length; i++) {
+            var attr = this.attributes[i];
+            this.attributeChangedCallback(attr.name, undefined, attr.value);
         }
-    };
+    }
 
     detachedCallback() {
         /**
          *
          */
-    };
+    }
 
     attributeChangedCallback(attr, oldVal, newVal) {
         /**
@@ -44,7 +44,7 @@ pb.Base = class extends HTMLElement {
         if (typeof fnObj === 'function') {
             fnObj(val);
         }
-    };
+    }
 
     /**
      * Extended Methods
