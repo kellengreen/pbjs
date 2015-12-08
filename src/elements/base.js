@@ -2,7 +2,7 @@
  * WebComponent Callbacks
  */
 
-pb.BaseElement = class extends HTMLElement {
+pb.Element = class extends HTMLElement {
 
     /**
      * WebComponent Callbacks
@@ -12,7 +12,14 @@ pb.BaseElement = class extends HTMLElement {
         /**
          *
          */
+        super[pb.symbols.created]();
     };
+
+    [pb.symbols.created]() {
+        /**
+         *
+         */
+    }
 
     attachedCallback() {
         /**
@@ -24,6 +31,14 @@ pb.BaseElement = class extends HTMLElement {
             var attr = this.attributes[i];
             this.attributeChangedCallback(attr.name, undefined, attr.value);
         }
+        super[pb.symbols.attached]();
+
+    }
+
+    [pb.symbols.attached]() {
+        /**
+         *
+         */
     }
 
     detachedCallback() {
@@ -36,7 +51,7 @@ pb.BaseElement = class extends HTMLElement {
         /**
          *
          */
-        var fnName = '$' + name.replace(/-([a-z])/ig, function(m) {
+        var fnName = name.replace(/-([a-z])/ig, function(m) {
                 return m[1].toUpperCase();
             }) + 'Changed',
             fnObj = this[fnName];
@@ -50,7 +65,7 @@ pb.BaseElement = class extends HTMLElement {
      * Extended Methods
      */
 
-    $error() {
+    error() {
         /**
          *
          */
@@ -61,7 +76,7 @@ pb.BaseElement = class extends HTMLElement {
      * Static Methods
      */
 
-    static $register(name) {
+    static register(name) {
         /**
          *
          */

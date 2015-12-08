@@ -11,14 +11,12 @@
             <!--<pb-csv pb-id="csv"></pb-csv>-->
         <!--</pb-scope>-->
     <!--</pb-scope>-->
-
     <pb-input pb-ctrl="searchFilter" pb-id="query"></pb-input>
 
-    <pb-repeat pb-id="activeFilters" pb-model="">
+    <pb-repeat pb-id="apps.results" pb-model="">
         <template>
-            <pb-bind pg-id=""></pb-bind>
-            <pb-bind pb-id=""></pb-bind>
-            <pg-base>X</pg-base>
+            <pb-bind pg-id="name"></pb-bind>
+            <pb-bind pb-id="description"></pb-bind>
         </template>
     </pb-repeat>
 
@@ -38,15 +36,63 @@
 <script>
     'use strict';
 
-//    function searchResults(scope) {
-//        scope.val = 'outer';
-//    }
+    class PbMap {
+
+        constructor() {
+            this.data = new Map();
+            this.name = name;
+        }
+
+        set(key, val) {
+            key.split('.').forEach(function(val, idx, array) {
+
+                if (idx === array.length - 1) {
+
+                } else {
+
+                }
+                iterable.push([i, item]);
+            });
+            super.set(key, val);
+            console.log('set: ' + this.name);
+        }
+
+//        has(key) {
 //
-//    function searchFilters(scope) {
-//        scope.val = 'inner';
-//    }
+//        }
+//
+//        delete(key) {
+//            super.delete(key);
+//            console.log('delete: ' + this.name);
+//        }
+//
+//        clear() {
+//            super.clear();
+//            console.log('clear: ' + this.name);
+//        }
+
+//        entries(){}
+//        forEach(){}
+////        get(){}
+////        has(){}
+//        keys(){}
+////        set(){}
+//        values(){}
+//
+//        *[Symbol.iterator]() {
+//            for (var key of this.data) {
+//                yield key;
+//            }
+//        }
+    }
+
+    var a = new PbMap('A'),
+        b = new PbMap('B'),
+        c = new PbMap('C');
+
+    a.set('foo.bar.apple', 'sauce');
 
 </script>
-<script src="bin/pb.js"></script>
+<!--<script src="bin/pb.js"></script>-->
 </body>
 </html>

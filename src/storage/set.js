@@ -7,12 +7,11 @@ pb.Set = class extends Set {
      *
      */
 
-    constructor(root, iterable) {
+    constructor(iterable) {
         /**
          *
          */
         super(iterable);
-        this.parent = 'P';
     }
 
     add(val) {
@@ -20,13 +19,15 @@ pb.Set = class extends Set {
          *
          */
         super.add(val);
+        this[pb.valChanged](val);
     }
 
-    delete(key) {
+    delete(val) {
         /**
          *
          */
-        super.delete(key);
+        super.delete(val);
+        this[pb.valDeleted](val);
     }
 
     clear() {
@@ -34,5 +35,19 @@ pb.Set = class extends Set {
          *
          */
         super.clear();
+        this[pb.valCleared]();
     }
+
+    [pb.valChanged](val) {
+
+    }
+
+    [pb.valDeleted](val) {
+
+    }
+
+    [pb.valCleared]() {
+
+    }
+
 };

@@ -1,5 +1,13 @@
 "use strict";
-const pb = {};
+const pb = {
+    elemCreated: new Symbol(),
+    elemAttached: new Symbol(),
+    elemDetached: new Symbol(),
+    elemChanged: new Symbol(),
+    valChanged: new Symbol(),
+    valDeleted: new Symbol(),
+    valCleared: new Symbol()
+};
 /**
  *
  */
@@ -10,39 +18,41 @@ pb.Map = class extends Map {
      * Builtin Methods
      */
 
-    constructor(iterable, nameSpace) {
+    constructor(iterable) {
         super(iterable);
-        this.parent = 'P';
+        this.listeners = new Set();
     }
 
     set(key, val) {
         super.set(key, val);
-        this.$onSet(key, val);
+        console.log('set: ' + this);
+
+         Window.requestAnimationFrame()
     }
 
     delete(key) {
         super.delete(key);
-        this.$onDelete(key);
+        console.log('delete: ' + this);
     }
 
     clear() {
         super.clear();
-        this.$onClear();
+        console.log('clear: ' + this);
     }
 
     /**
      * Additional Methods
      */
 
-    $onSet(key, val) {
+    addListener(name, val) {
 
     }
 
-    $onDelete(key) {
+    removeListner(listener) {
 
     }
 
-    $onClear() {
+    onClear() {
 
     }
 
@@ -78,6 +88,55 @@ pb.Map = class extends Map {
         return PbMap.fromObj(obj);
     }
 };
+
+pb.KeylessMap = class extends Map {
+
+    /**
+     * Builtin Methods
+     */
+
+    constructor(array) {
+        var i = 0,
+            iterable = [];
+        array.forEach(function(item) {
+            iterable.push([i, item]);
+        });
+
+        super(iterable);
+        this.i = i;
+        this.$listeners = new Map();
+    }
+
+    set(val) {
+        var key = i++;
+        super.set(key, val);
+        this.$onChange(key, val);
+    }
+
+    delete(key) {
+        super.delete(key);
+        this[pb.valDeleted](key, val);
+    }
+
+    clear() {
+        super.clear();
+        this.i = 0;
+        this[pb.valCleared]();
+    }
+
+    onSet(key, val) {
+
+    }
+
+    onDelete(key) {
+
+    }
+
+    onClear() {
+
+    }
+
+};
 /**
  *
  */
@@ -87,12 +146,11 @@ pb.Set = class extends Set {
      *
      */
 
-    constructor(root, iterable) {
+    constructor(iterable) {
         /**
          *
          */
         super(iterable);
-        this.parent = 'P';
     }
 
     add(val) {
@@ -100,13 +158,15 @@ pb.Set = class extends Set {
          *
          */
         super.add(val);
+        this[pb.valChanged](val);
     }
 
-    delete(key) {
+    delete(val) {
         /**
          *
          */
-        super.delete(key);
+        super.delete(val);
+        this[pb.valDeleted](val);
     }
 
     clear() {
@@ -114,14 +174,28 @@ pb.Set = class extends Set {
          *
          */
         super.clear();
+        this[pb.valCleared]();
     }
+
+    [pb.valChanged](val) {
+
+    }
+
+    [pb.valDeleted](val) {
+
+    }
+
+    [pb.valCleared]() {
+
+    }
+
 };
 
 /**
  * WebComponent Callbacks
  */
 
-pb.BaseElement = class extends HTMLElement {
+pb.Element = class extends HTMLElement {
 
     /**
      * WebComponent Callbacks
@@ -131,7 +205,14 @@ pb.BaseElement = class extends HTMLElement {
         /**
          *
          */
+        super[pb.symbols.created]();
     };
+
+    [pb.symbols.created]() {
+        /**
+         *
+         */
+    }
 
     attachedCallback() {
         /**
@@ -139,10 +220,18 @@ pb.BaseElement = class extends HTMLElement {
          */
 
         // exec attribute changed callbacks
-        for (var i = 0; i < this.elem.attributes.length; i++) {
-            var attr = this.elem.attributes[i];
-            this.attrChanged(attr.name, attr.value);
+        for (var i = 0; i < this.attributes.length; i++) {
+            var attr = this.attributes[i];
+            this.attributeChangedCallback(attr.name, undefined, attr.value);
         }
+        super[pb.symbols.attached]();
+
+    }
+
+    [pb.symbols.attached]() {
+        /**
+         *
+         */
     }
 
     detachedCallback() {
@@ -155,7 +244,7 @@ pb.BaseElement = class extends HTMLElement {
         /**
          *
          */
-        var fnName = '$' + name.replace(/-([a-z])/ig, function(m) {
+        var fnName = name.replace(/-([a-z])/ig, function(m) {
                 return m[1].toUpperCase();
             }) + 'Changed',
             fnObj = this[fnName];
@@ -169,7 +258,7 @@ pb.BaseElement = class extends HTMLElement {
      * Extended Methods
      */
 
-    $error() {
+    error() {
         /**
          *
          */
@@ -180,7 +269,7 @@ pb.BaseElement = class extends HTMLElement {
      * Static Methods
      */
 
-    static $register(name) {
+    static register(name) {
         /**
          *
          */
