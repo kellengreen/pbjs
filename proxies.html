@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>pb.js</title>
+</head>
+<body>
+<script>
+    'use strict';
+
+    var h = {
+        get: function(target, key) {
+            console.log('get - ' + key);
+            return target[key];
+        },
+        set: function(target, key, val) {
+            console.log('set - ' + key + ': ' + val);
+            return target[key] = val;
+        }
+    };
+
+    var o = new Proxy({}, h),
+        a = new Proxy([4, 3, 2, 1], h),
+        m = new Proxy(new Map(), h),
+        s = new Proxy(new Set(), h);
+    s.add('foo');
+</script>
+</body>
+</html>
