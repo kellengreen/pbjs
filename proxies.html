@@ -9,21 +9,49 @@
     'use strict';
 
     var h = {
-        get: function(target, key) {
+        get: function(obj, key) {
             console.log('get - ' + key);
-            return target[key];
+            if (key in obj) {
+                return obj[key];
+            } else {
+                return obj.$[key];
+            }
         },
-        set: function(target, key, val) {
-            console.log('set - ' + key + ': ' + val);
-            return target[key] = val;
+        set: function(obj, key, val) {
+
+            if (key in obj) {
+                return obj[key] = val;
+            } else {
+
+                console.log('set - ' + key + ': ' + val);
+
+                if (typeof val === 'object') {
+                    val = pbObj(val);
+                    val.dir = (obj.dir ? obj.dir + '.' : '') + key;
+                }
+
+                return obj.$[key] = val;
+            }
         }
     };
 
-    var o = new Proxy({}, h),
-        a = new Proxy([4, 3, 2, 1], h),
-        m = new Proxy(new Map(), h),
-        s = new Proxy(new Set(), h);
-    s.add('foo');
+    function pbObj(obj) {
+        Object.defineProperty(obj, '$', {
+            value: new obj.constructor(),
+            writable: true
+        });
+        Object.defineProperty(obj, 'dir', {
+            value: '',
+            writable: true
+        });
+        return new Proxy(obj, h);
+    }
+
+    var a = pbObj({});
+    a.b = {};
+    a.foo = 'bar';
+    a.b.c = [];
+    console.dir(a);
 </script>
 </body>
 </html>
