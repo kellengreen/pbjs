@@ -11,11 +11,7 @@
     var h = {
         get: function(obj, key) {
             console.log('get - ' + key);
-            if (key in obj) {
-                return obj[key];
-            } else {
-                return obj.$[key];
-            }
+            return key in obj ? obj[key] : obj.$[key];
         },
         set: function(obj, key, val) {
 
