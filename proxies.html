@@ -5,45 +5,80 @@
     <title>pb.js</title>
 </head>
 <body>
+<script src="bin/reflect.js"></script>
 <script>
     'use strict';
+    var pb = {};
 
-    var h = {
+    pb.handler = {
+
         get: function(obj, key) {
             console.log('get - ' + key);
-            return key in obj ? obj[key] : obj.$[key];
+            return obj.$.hasOwnProperty(key) ? obj.$[key] : obj[key];
         },
+
         set: function(obj, key, val) {
 
-            if (key in obj) {
-                return obj[key] = val;
-            } else {
+            if (obj.$.hasOwnProperty(key)) {
 
                 console.log('set - ' + key + ': ' + val);
 
                 if (typeof val === 'object') {
-                    val = pbObj(val);
-                    val.dir = (obj.dir ? obj.dir + '.' : '') + key;
+                    var proxy = pb.createProxy(val);
+                    val.path = (obj.dir ? obj.dir + '.' : '') + key;
                 }
 
-                return obj.$[key] = val;
+                return obj.$[key] = proxy;
+
             }
+            return obj[key] = val;
         }
     };
 
-    function pbObj(obj) {
+    pb.createProxy = function(obj) {
         Object.defineProperty(obj, '$', {
-            value: new obj.constructor(),
-            writable: true
+            writable: true,
+            value: new obj.constructor()
         });
-        Object.defineProperty(obj, 'dir', {
-            value: '',
-            writable: true
-        });
-        return new Proxy(obj, h);
-    }
 
-    var a = pbObj({});
+        Object.defineProperty(obj, '_path', {
+            writable: true,
+            value: ''
+        });
+
+        Object.defineProperty(obj, '_get', {
+            value: function(path) {
+
+                var val = this;
+                var keys = path.split('.');
+
+                for (var key in keys) {
+                    val = val.hasOwnProperty(key);
+                    if (obj !== undefined) {
+                        return undefined;
+                    }
+                }
+                return val;
+            }
+        });
+
+        Object.defineProperty(obj, '_set', {
+            value: function(key, val) {
+
+            }
+        });
+
+        Object.defineProperty(obj, '_setSilent', {
+            value: function(key, val) {
+
+            }
+        });
+
+        return new Proxy(obj, h);
+
+    };
+
+    var a = pb.createProxy({});
     a.b = {};
     a.foo = 'bar';
     a.b.c = [];
