@@ -10,76 +10,66 @@
     'use strict';
     var pb = {};
 
-    pb.handler = {
+    pb.proxy = {
 
-        get: function(obj, key) {
-            return obj.$.hasOwnProperty(key) ? obj.$[key] : obj[key];
+        utils: Symbol('Proxy utility properties'),
+
+        handler: {
+
+            get: function(obj, key) {
+                console.log('GET: ' + key);
+                return obj[key];
+            },
+
+            set: function(obj, key, val) {
+
+                console.log('SET: ' + key + ' = ' + val);
+
+                if (typeof val === 'object') {
+                    val = pb.proxy.create(val);
+                    val[pb.proxy.utils].path = (obj[pb.proxy.utils].path ? obj[pb.proxy.utils].path + '.' : '') + key;
+                }
+
+                return obj[key] = val;
+            }
         },
 
-        set: function(obj, key, val) {
-
-            if (typeof val === 'object') {
-                var proxy = pb.createProxy(val);
-                proxy.path = (obj.path ? obj.path + '.' : '') + key;
-            }
-
-            return obj.$[key] = proxy;
-
-        }
-    };
-
-    pb.proxy = {
-        path: Symbol('Proxy Path'),
         create: function(obj) {
-            Object.defineProperty(obj, '$', {
-                writable: true,
-                value: new obj.constructor()
-            });
 
-            Object.defineProperty(obj, '_path', {
-                writable: true,
-                value: ''
-            });
+            Object.defineProperty(obj, pb.proxy.utils, {
+                value: {
+                    path: '',
+                    getByPath: function (path) {
 
-            Object.defineProperty(obj, '_get', {
-                value: function(path) {
+                        var val = this;
+                        var keys = path.split('.');
 
-                    var val = this;
-                    var keys = path.split('.');
-
-                    for (var key in keys) {
-                        val = val.hasOwnProperty(key);
-                        if (obj !== undefined) {
-                            return undefined;
+                        for (var key in keys) {
+                            val = val.hasOwnProperty(key);
+                            if (obj !== undefined) {
+                                return undefined;
+                            }
                         }
+                        return val;
+
+                    },
+                    setByPath: function (path, val) {
+
+                    },
+                    setByPathSilent: function (path, val) {
+
                     }
-                    return val;
                 }
             });
 
-            Object.defineProperty(obj, '_set', {
-                value: function(key, val) {
-
-                }
-            });
-
-            Object.defineProperty(obj, '_setSilent', {
-                value: function(key, val) {
-
-                }
-            });
-
-            return new Proxy(obj, h);
-
+            return new Proxy(obj, pb.proxy.handler);
         }
     };
 
-
-    var a = pb.createProxy({});
-    a.b = {};
+    var a = pb.proxy.create({});
     a.foo = 'bar';
-    a.b.c = [];
-    console.dir(a);
+    console.dir(a.foo);
+
 </script>
 </body>
 </html>
