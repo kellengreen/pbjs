@@ -17,8 +17,34 @@
         handler: {
 
             get: function(obj, key) {
-                console.log('GET: ' + key);
-                return obj[key];
+
+                console.log('Get: ' + key);
+
+                if (typeof key !== 'string') {
+                    return obj[key];
+                }
+
+                const keys = path.split('.'),
+                      last = keys.length - 1;
+
+                for (var i = 0; i < keys.length; i++) {
+                    key = keys[i];
+
+                    if (obj.hasOwnProperty(key)) {
+                        if (i === last) {
+                            if (val === undefined) {
+                                return obj[key];
+                            } else {
+                                return obj[key] = val;
+                            }
+                        } else if (typeof obj === 'object') {
+                            obj = obj[key];
+                            continue;
+                        }
+                    }
+
+                    throw ReferenceError('"' + key + '" does not exist in "' + path + '"');
+                }
             },
 
             set: function(obj, key, val) {
@@ -40,38 +66,53 @@
                 value: {
                     path: '',
                     parent: obj,
-                    getByPath: function (path) {
+
+                    byPath: function (path) {
 
                         var obj = this.parent;
-                        const keys = path.split('.');
-                        for (var i = 0; i < keys.length; i++) {
-                            var 
-                        }
+                        const keys = path.split('.'),
+                              last = keys.length - 1;
 
-                        for (var key of keys) {
-                            if (typeof obj === 'object') {
-                                obj = obj.hasOwnProperty(key);
-                                if (obj !== undefined) {
-                                    return undefined;
-                            }
-                            } else {
+                        for (var i = 0, key; i < keys.length; i++) {
+                            key = keys[i];
 
+                            if (obj.hasOwnProperty(key)) {
+                                if (i === last) {
+                                    if (val === undefined) {
+                                        return obj[key];
+                                    } else {
+                                        return obj[key] = val;
+                                    }
+                                } else if (typeof obj === 'object') {
+                                    obj = obj[key];
+                                    continue;
+                                }
                             }
+
+                            throw ReferenceError('"' + key + '" does not exist in "' + path + '"');
                         }
-                        return val;
                     },
+
                     setByPath: function (path, val) {
 
                         var obj = this.parent;
-                        const keys = path.split('.');
+                        const keys = path.split('.'),
+                              last = keys.length - 1;
 
-                        for (var key of keys) {
-                            obj = obj.hasOwnProperty(key);
-                            if (obj !== undefined) {
-                                return undefined;
+                        for (var i = 0, key; i < keys.length; i++) {
+                            key = keys[i];
+
+                            if (obj.hasOwnProperty(key)) {
+                                if (i === last) {
+                                    return obj[key];
+                                } else if (typeof obj === 'object') {
+                                    obj = obj[key];
+                                    continue;
+                                }
                             }
+
+                            throw ReferenceError('"' + key + '" does not exist in "' + path + '"');
                         }
-                        return val;
                     }
                 }
             });

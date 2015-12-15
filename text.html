@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>pb.js</title>
+</head>
+<body>
+    <input type="text">
+    <script>
+        var input = document.querySelector('input');
+        input.raf = null;
+
+        input.addEventListener('input', function() {
+            const val = input.value;
+            cancelAnimationFrame(input.raf);
+            input.raf = requestAnimationFrame(function() {
+                if (input.value !== val) {
+                    console.log('same');
+                } else {
+                   console.log('diff');
+                }
+            });
+
+        });
+
+
+
+
+    </script>
+</body>
+</html>
