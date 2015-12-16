@@ -19,32 +19,8 @@
             get: function(obj, key) {
 
                 console.log('Get: ' + key);
-
-                if (typeof key !== 'string') {
-                    return obj[key];
-                }
-
-                const keys = path.split('.'),
-                      last = keys.length - 1;
-
-                for (var i = 0; i < keys.length; i++) {
-                    key = keys[i];
-
-                    if (obj.hasOwnProperty(key)) {
-                        if (i === last) {
-                            if (val === undefined) {
-                                return obj[key];
-                            } else {
-                                return obj[key] = val;
-                            }
-                        } else if (typeof obj === 'object') {
-                            obj = obj[key];
-                            continue;
-                        }
-                    }
-
-                    throw ReferenceError('"' + key + '" does not exist in "' + path + '"');
-                }
+                const pair = obj[pb.proxy.utils].fromKey(key);
+                return pair.obj[pair.key];
             },
 
             set: function(obj, key, val) {
@@ -56,7 +32,8 @@
                     val[pb.proxy.utils].path = (obj[pb.proxy.utils].path ? obj[pb.proxy.utils].path + '.' : '') + key;
                 }
 
-                return obj[key] = val;
+                const pair = obj[pb.proxy.utils].fromKey(key);
+                return pair.obj[pair.key] = val;
             }
         },
 
@@ -66,52 +43,25 @@
                 value: {
                     path: '',
                     parent: obj,
+                    fromKey: function (key) {
+                        var obj =  this.parent;
 
-                    byPath: function (path) {
+                        if (typeof key === 'string') {
+                            const keys = path.split('.'),
+                                  last = keys.length - 1;
 
-                        var obj = this.parent;
-                        const keys = path.split('.'),
-                              last = keys.length - 1;
-
-                        for (var i = 0, key; i < keys.length; i++) {
-                            key = keys[i];
-
-                            if (obj.hasOwnProperty(key)) {
+                            for (var i = 0; i < keys.length; i++) {
+                                key = keys[i];
                                 if (i === last) {
-                                    if (val === undefined) {
-                                        return obj[key];
-                                    } else {
-                                        return obj[key] = val;
-                                    }
-                                } else if (typeof obj === 'object') {
-                                    obj = obj[key];
-                                    continue;
+                                    break;
                                 }
+                                obj = obj[key];
                             }
-
-                            throw ReferenceError('"' + key + '" does not exist in "' + path + '"');
                         }
-                    },
 
-                    setByPath: function (path, val) {
-
-                        var obj = this.parent;
-                        const keys = path.split('.'),
-                              last = keys.length - 1;
-
-                        for (var i = 0, key; i < keys.length; i++) {
-                            key = keys[i];
-
-                            if (obj.hasOwnProperty(key)) {
-                                if (i === last) {
-                                    return obj[key];
-                                } else if (typeof obj === 'object') {
-                                    obj = obj[key];
-                                    continue;
-                                }
-                            }
-
-                            throw ReferenceError('"' + key + '" does not exist in "' + path + '"');
+                        return {
+                            obj: obj,
+                            key: key
                         }
                     }
                 }
