@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>pb.js</title>
 </head>
-<body ABC="" foo-bar="BAR">
+<body>
     <!--<pb-scope pb-id="outerScope">-->
         <!--<pb-scope pb-id="innerScope">-->
             <!--<pb-bind pb-id="val"></pb-bind>-->
@@ -34,63 +34,7 @@
     </pb-scope>
     <pb-base>Hi</pb-base>
 <script>
-    'use strict';
 
-    class PbMap {
-
-        constructor() {
-            this.data = new Map();
-            this.name = name;
-        }
-
-        set(key, val) {
-            key.split('.').forEach(function(val, idx, array) {
-
-                if (idx === array.length - 1) {
-
-                } else {
-
-                }
-                iterable.push([i, item]);
-            });
-            super.set(key, val);
-            console.log('set: ' + this.name);
-        }
-
-//        has(key) {
-//
-//        }
-//
-//        delete(key) {
-//            super.delete(key);
-//            console.log('delete: ' + this.name);
-//        }
-//
-//        clear() {
-//            super.clear();
-//            console.log('clear: ' + this.name);
-//        }
-
-//        entries(){}
-//        forEach(){}
-////        get(){}
-////        has(){}
-//        keys(){}
-////        set(){}
-//        values(){}
-//
-//        *[Symbol.iterator]() {
-//            for (var key of this.data) {
-//                yield key;
-//            }
-//        }
-    }
-
-    var a = new PbMap('A'),
-        b = new PbMap('B'),
-        c = new PbMap('C');
-
-    a.set('foo.bar.apple', 'sauce');
 
 </script>
 <!--<script src="bin/pb.js"></script>-->
