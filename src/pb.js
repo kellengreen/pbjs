@@ -1,17 +1,11 @@
 'use strict';
-const pb = (function() {
+(function() {
 
     /**
      * Symbols
      */
 
-    const symbols = {
-        'listeners': Symbol('listeners'),
-        'addListener': Symbol('addListener'),
-        'removeListener': Symbol('removeListener')
-
-
-    };
+    const listeners = Symbol('listeners');
 
     /**
      * PbProxy
@@ -19,58 +13,70 @@ const pb = (function() {
 
     class PbObj {
 
-        static init(obj) {
+        static proxy(obj) {
             /**
              *
              */
+            Object.defineProperty(obj, listeners, {
+                value: {}
+            });
+
             let handler = {
                 set: PbObj.set
             };
 
-            Object.listeners(obj, symbols.listeners, {
-                value: {}
-            });
-
-            Object.defineProperty(obj, symbols.addListener, {
-                value: function(key, callback) {
-                    let symbol = Symbol('listener');
-
-                    if (this[symbols.listeners][key] === undefined) {
-                        this[symbols.listeners][key] = {};
-                    }
-
-                    this[symbols.listeners][key][symbol] = callback;
-                    return Symbol();
-                }
-            });
-
-
-            Object.defineProperty(obj, symbols.removeListener, {
-                value: function(key, symbol) {
-                    try {
-                        return delete this[symbols.listeners][key][symbol];
-                    } catch(e) {
-                        return false;
-                    }
-                }
-            });
-
             return new Proxy(obj, handler);
+        }
+
+        static addListener(obj, key, callback) {
+            /**
+             *
+             */
+            let symbol = Symbol('listener');
+
+            if (obj[listeners][key] === undefined) {
+                obj[listeners][key] = {};
+            }
+
+            obj[listeners][key][symbol] = callback;
+            return symbol;
+        }
+
+        static removeListener(obj, key, symbol) {
+            /**
+             *
+             */
+            if (obj[listeners][key] !== undefined) {
+                delete obj[listeners][key][symbol];
+            }
         }
 
         static set(obj, key, val) {
             /**
              *
              */
+
+            // convert to proxy if necessary
             if (typeof val === 'object') {
-                val = PbObj.init(val);
+                val = PbObj.proxy(val);
             }
+
+            // call listeners
+            if (obj[listeners][key]) {
+                for (let symbol of Object.getOwnPropertySymbols(obj[listeners][key])) {
+                    obj[listeners][key][symbol](val);
+                }
+            }
+
             return obj[key] = val;
         }
 
         static getByPath(path) {
+            /**
+             *
+             */
             const keys = path.split('.');
-            let val = pb.root;
+            let val = pb;
             for (let i = 0; i < keys.length; i++) {
                 let key = keys[i];
                 val = val[key];
@@ -131,38 +137,46 @@ const pb = (function() {
      */
 
     class PbBindElement extends PbElement {
-
         /**
          *
          */
-
         createdCallback() {
             /**
              *
              */
+            console.log('created');
             this.idChanged(this.getAttribute('pb-id'));
         }
 
+        detachedCallback() {
+            /**
+             *
+             */
+            this.value[PbObj.removeListener](this.listener);
+
+        }
+
         idChanged(value) {
-            let obj = PbObj.getByPath(value);
-            this.textContent = PbObj.getByPath(value);
+            /**
+             *
+             */
+            //this.value = PbObj.getByPath(value);
+            //const fn = this.idChanged.bind(this);
+            //this.listener = this.value[PbObj.addListener](fn);
+            //this.textContent = this.value;
         }
     }
+    PbBindElement.init('pb-bind');
 
     /**
-     * pb
+     * Globals
      */
 
-    return {
-        symbols: symbols,
-        BindElement: PbBindElement,
-        root:  PbObj.init({})
+    window.Pb = {
+        addListener: PbObj.addListener,
+        removeListener: PbObj.removeListener
     };
 
-})();
+    window.pb = PbObj.proxy({});
 
-//=include storage/map.js
-//=include storage/set.js
-//=include elements/base.js
-//=include elements/provider.js
-//=include elements/bind.js
+})();

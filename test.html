@@ -5,14 +5,19 @@
     <title>pb.js</title>
 </head>
 <body>
-    <!--<button id="new-elem">New Elem</button>-->
-    <!--<button id="new-attr">New Attr</button>-->
     <pb-bind pb-id="foo"></pb-bind>
 
     <script src="src/pb.js"></script>
     <script>
-        pb.root.foo = "Hello, world!";
-        pb.BindElement.init('pb-bind');
+        console.log('script');
+        pb.foo = "foo";
+
+        Pb.addListener(pb, 'foo', function(value) {
+            console.log('XXX');
+        });
+
+        pb.foo = "bar";
+
     </script>
 </body>
 </html>
