@@ -5,19 +5,24 @@
     <title>pb.js</title>
 </head>
 <body>
-    <pb-bind pb-id="foo"></pb-bind>
+    <pb-bind bind-to="foo"></pb-bind>
 
     <script src="src/pb.js"></script>
     <script>
-        console.log('script');
+//        const callback = function(val) {
+//            window.requestAnimationFrame(function() {
+//                console.log(val);
+//            });
+//        };
         pb.foo = "foo";
 
-        Pb.addListener(pb, 'foo', function(value) {
-            console.log('XXX');
-        });
+//        Pb.addListener('foo', callback);
 
-        pb.foo = "bar";
+        pb.foo = "FOO";
+        document.querySelector('pb-bind').setAttribute('bind-to', 'bar');
 
+
+        pb.foo
     </script>
 </body>
 </html>
