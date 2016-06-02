@@ -1,28 +1,272 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>pb.js</title>
+    <title>Brilliant Testing</title>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
+<style>
+    .red {
+        color: red;
+    }
+
+    [pb-is^='drawer'] {
+
+    }
+</style>
 <body>
-    <pb-bind bind-to="foo"></pb-bind>
 
-    <script src="src/pb.js"></script>
+    <!--drawer-->
+    <div pb-is="drawer" pb-id="my-drawer" pb-state="">My Drawer</div>
+    <div pb-is="drawer-toggle" pb-for="my-drawer">Open Drawer</div>
+
+    <!--bind-->
+    <div pb-is="bind" pb-to="foo.bar"></div>
+
+    <!--repeat-->
+    <div pb-is="repeat" pb-to="foo.bar">
+        <div pb-is="repeat-item">
+            <div pb-is="repeat-bind" pb-to="foo"></div>
+        </div>
+
+    </div>
+
+    <!--tooltip-->
+    <div pb-is="tooltip" pb-id="my-tooltip"></div>
+    <div pb-is="tooltip-item" pb-for="my-tooltip">
+        <a href="#">Find out more</a>
+    </div>
+
+    <!--autocomplete-->
+    <input pb-is="autocomplete-input" pb-id="my-autocomplete" title="">
+    <div pb-is="autocomplete-items.sb" pb-for="my-autocomplete">
+        <div pb-is="autocomplete-item">
+            <div pb-is="bind" pb-to=""></div>
+        </div>
+    </div>
+
+    <!--modal-->
+    <div pb-is="modal" pb-id="my-modal">
+        <p pb-is="modal-toggle" pb-for="my-modal">Close</p>
+    </div>
+    <div pb-is="modal-toggle" pb-for="my-modal">Open</div>
+
+    <button id="add-node">Add Node</button>
+    <button id="mod-attr">Mod Attr</button>
+    <div class="container"></div>
+
     <script>
-//        const callback = function(val) {
-//            window.requestAnimationFrame(function() {
-//                console.log(val);
-//            });
-//        };
-        pb.foo = "foo";
+        document.querySelector('#add-node').addEventListener('click', function () {
+            const elem = document.createElement('p');
+            elem.textContent = 'Foo';
+            document.querySelector('.container').appendChild(elem);
+        });
 
-//        Pb.addListener('foo', callback);
+        document.querySelector('#mod-attr').addEventListener('click', function () {
+            const elems = document.querySelectorAll('.container p');
+            elems[elems.length - 1].classList.add('red');
+        });
 
-        pb.foo = "FOO";
-        document.querySelector('pb-bind').setAttribute('bind-to', 'bar');
+        class A {
+            static register(id) {
+                /**
+                 *
+                 */
+                this.id = id;
+                console.dir(this.getId());
+            }
+
+            static getId() {
+                /**
+                 *
+                 */
+                const proto = Object.getPrototypeOf(this);
+                if (proto.getId) {
+                    return `${proto.getId()}.${this.id}`;
+                }
+                return this.id;
+            }
+        }
+
+        A.register('a');
+        class B extends A {}
+        B.register('b');
+        class C extends B {}
+        C.register('c');
+
+        (function() {
+
+            class PbManager {
+                /**
+                 *
+                 */
+                constructor() {
+                    /**
+                     *
+                     */
+                    this.names = new Map();
+
+                    // listen for dom changes
+                    const options = {
+                        childList: true,
+                        subtree: true,
+                        attributes: true
+                    };
+                    const callback = this.parseMutations.bind(this);
+                    const observer = new MutationObserver(callback);
+                    observer.observe(document.body, options);
+                }
+
+                parseMutations(mutations) {
+                    /**
+                     *
+                     */
+                    mutations.forEach((mutation) => {
+                        if (mutation.type === 'attributes') {
+                            const elem = mutation.target;
+                            const name = mutation.attributeName;
+                            const value = elem.getAttribute(name);
+                            this.attrChanged(elem, name, value);
+                        } else if (mutation.type === 'childList') {
+                            this.loopPbElems(mutation.addedNodes, this.pbElemAdded);
+                            this.loopPbElems(mutation.removedNodes, this.pbElemRemoved);
+                        }
+                    });
+                }
+
+                loopPbElems(nodeList, callback) {
+                    /**
+                     * Loop pbElements
+                     */
+                    for (let i = 0, elem; elem = nodeList[i]; i++) {
+                        if (elem instanceof HTMLElement && elem.getAttribute('pb-is')) {
+                            callback(elem);
+                        }
+                    }
+                }
+
+                attrChanged(elem, name, value) {
+                    /**
+                     *
+                     */
+                    if (name.starsWith('pb-')) {
+                        if (name === 'pb-is') {
+
+                        } else if (name === 'pb-id') {
+
+                        } else if (name === 'pb-id') {
+
+                        }
+                        console.log('Changed');
+                        console.dir(elem);
+                        console.log(name);
+                        console.log(value);
+                    }
+                }
+
+                pbElemAdded(elem) {
+                    /**
+                     *
+                     */
+                    console.log('Added');
+                    console.dir(elem);
+                }
+
+                pbElemRemoved(elem) {
+                    /**
+                     *
+                     */
+                    console.log('Removed');
+                    console.dir(elem);
+                }
+
+                register(name, PbElement) {
+                    /**
+                     *
+                     */
+                    if (this.names.has(name)) {
+                        throw `Element "${name}" is already registered`;
+                    }
+
+                    this.names.set(name, PbElement);
+
+                    // find existing elements
+                    const elems = document.querySelectorAll(`[pb-is^='${name}']`);
+                    for (let i = 0, elem; elem = elems[i]; i++) {
+                        let pbElement = new PbElement();
+                        pbElement.promote(elem);
+                    }
+                }
+            }
+
+            const pb = new PbManager();
 
 
-        pb.foo
+            class PbElement {
+
+                constructor(elem) {
+                    this.elem = elem;
+                }
+
+                attrIsChanged(elem, value) {
+
+                }
+
+                attrForChanged(elem, value) {
+
+                }
+
+                attrToChanged(elem, value) {
+
+                }
+
+                promote(elem) {
+
+                }
+
+                demote(elem) {
+
+                }
+            }
+
+            class PbDrawer extends PbElement {
+                constructor() {
+                    super();
+                }
+
+                promote(elem) {
+
+                }
+
+                demote(elem) {
+
+                }
+            }
+
+            pb.register('drawer', PbDrawer);
+
+            class DrawerOpen {
+                createdCallback() {
+                    super.createdCallback();
+
+                    this._click = (evt) => {
+                        evt.stopPropagation();
+                        this.$forElement.$open();
+                    };
+                }
+
+                attachedCallback() {
+                    super.attachedCallback();
+                    this.addEventListener('click', this._click);
+                }
+
+                detachedCallback() {
+                    this.removeEventListener('click', this._click);
+                }
+            }
+
+        })();
     </script>
 </body>
 </html>
+
