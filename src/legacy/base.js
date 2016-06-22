@@ -1,14 +1,11 @@
 /**
  * WebComponent Callbacks
  */
-
-pb.Element = class extends HTMLElement {
-
+pb.Element = class {
     /**
      * WebComponent Callbacks
      */
-
-    createdCallback() {
+    constructor() {
         /**
          *
          */

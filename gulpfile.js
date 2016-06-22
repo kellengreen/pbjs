@@ -1,32 +1,29 @@
-var gulp = require('gulp');
-var watch = require('gulp-watch');
-var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
-var include = require('gulp-include');
+const gulp = require('gulp');
+const watch = require('gulp-watch');
+const uglify = require('gulp-uglify');
+const rename = require('gulp-rename');
+const include = require('gulp-include');
 
-var version = '0.0.0';
-
-function buildTask() {
-    gulp.src('src/pb.js')
-        .pipe(include())
-        .pipe(gulp.dest('bin'));
-}
-
-function compressTask() {
-    gulp.src('src/pb.' + version + '.js')
-        .pipe(rename(function(path) {
-            path.extname = '.min.js';
-        }))
-        .pipe(uglify())
-        .pipe(gulp.dest('bin'));
-}
+const version = '0.0.1';
 
 function watchTask() {
-    buildTask();
-    gulp.watch('./src/**/*.js', ['build']);
+    gulp.start('js');
+    gulp.watch('./src/**/*.js', ['js']);
+}
+
+function jsTask() {
+    gulp.src('src/bootstrap.js')
+
+        .pipe(include())
+            .on('error', console.log)
+        
+        .pipe(rename(function(path) {
+            path.basename = `pb-${version}.min`;
+        }))
+        
+        .pipe(gulp.dest('./bin'));
 }
 
 gulp.task('watch', watchTask);
-gulp.task('compress', compressTask);
-gulp.task('build', buildTask);
+gulp.task('js', jsTask);
 

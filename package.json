@@ -2,10 +2,7 @@
     "name": "pb.js",
   	"version": "0.0.1",
   	"private": true,
-    "dependencies": {
-    },
     "devDependencies": {
-        "karma": "latest",
         "gulp": "latest",
         "gulp-watch": "latest",
         "gulp-uglify": "latest",

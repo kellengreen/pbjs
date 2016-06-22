@@ -3,40 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>pb.js</title>
+    <style>
+        body {
+            color: hsl(0, 0%, 70%);
+            background-color: hsl(0, 0%, 15%);
+        }
+    </style>
 </head>
 <body>
-    <!--<pb-scope pb-id="outerScope">-->
-        <!--<pb-scope pb-id="innerScope">-->
-            <!--<pb-bind pb-id="val"></pb-bind>-->
-            <!--<pb-csv pb-id="csv"></pb-csv>-->
-        <!--</pb-scope>-->
-    <!--</pb-scope>-->
-    <pb-input pb-ctrl="searchFilter" pb-id="query"></pb-input>
 
-    <pb-repeat pb-id="apps.results" pb-model="">
-        <template>
-            <pb-bind pg-id="name"></pb-bind>
-            <pb-bind pb-id="description"></pb-bind>
-        </template>
-    </pb-repeat>
-
-    <pb-scope pb-id="searchPage">
-
-        <div>
-            <p>Products Supported</p>
-            <pb-repeat pg-id="searchFilters.products">
-                <template>
-                    <pb-bind pg-id="val" pg-val=""></pb-bind>
-                </template>
-            </pb-repeat>
-        </div>
-
-    </pb-scope>
-    <pb-base>Hi</pb-base>
+<script src="bin/pb-0.0.1.min.js"></script>
 <script>
+
+const storage = pb.Storage.new;
+
+pb.Storage.listen(storage, 'foo', function(value) {
+    console.log(`listen: ${value}`);
+});
+
+storage.foo = 'bar';
 
 
 </script>
-<!--<script src="bin/pb.js"></script>-->
 </body>
 </html>
