@@ -15,14 +15,15 @@
 <script src="bin/pb-0.0.1.min.js"></script>
 <script>
 
-const storage = pb.Storage.new;
-
-pb.Storage.listen(storage, 'foo', function(value) {
-    console.log(`listen: ${value}`);
+const proxy = new Proxy([], {
+    set: function(obj, name, value) {
+        console.log(`set: ${name}`);
+        obj[name] = value;
+        return true;
+    }
 });
-
-storage.foo = 'bar';
-
+proxy.push(0);
+proxy[1] = 1;
 
 </script>
 </body>

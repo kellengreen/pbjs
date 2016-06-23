@@ -1,0 +1,37 @@
+/**
+ * fade
+ */
+
+.fade {
+    transition: opacity .5s ease;
+}
+.fade-in {
+    opacity: 0;
+}
+.fade-rest {
+    opacity: 1;
+}
+.fade-out {
+    opacity: 0;
+}
+
+/**
+ * slide
+ */
+
+.slide {
+    transition: opacity .5s ease,
+                transform .5s ease;
+}
+.slide-in {
+    opacity: 0;
+    transform: translateX(-100%);
+}
+.slide-rest {
+    opacity: 1;
+    transform: translateX(0%);
+}
+.slide-out {
+    opacity: 0;
+    transform: translateX(100%);
+}
