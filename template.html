@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unity Docs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans+Mono" rel="stylesheet">
+    <link rel="stylesheet" href="unity.css">
+    <style>
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* */
+
+        .logo {
+
+        }
+
+        /* sidenav */
+
+        .sidenav {
+            width: 20rem;
+            flex-shrink: 0;
+        }
+
+        .sidenav\.container {
+            position: fixed;
+            height: 100vh;
+            width: inherit;
+            background-color: hsl(0, 0%, 90%);
+            overflow-y: scroll;
+            box-shadow: 5px 0 10px hsl(0, 0%, 50%);
+        }
+
+        .sidenav\.container::-webkit-scrollbar {
+            width: .5rem;
+        }
+
+        .sidenav\.container::-webkit-scrollbar-thumb {
+            background-color: hsla(0, 0%, 50%, .66);
+        }
+
+        .sidenav\.elem,
+        .sidenav\.mod {
+            display: block;
+        }
+
+        .sidenav\.elem {
+            font-size: 1.75rem;
+        }
+
+        .sidenav\.mod {
+            font-size: 1.25rem;
+            position: relative;
+            left: 1rem;
+        }
+
+        /* */
+
+        .docs {
+
+        }
+        .docs\.sample,
+        .docs\.example {
+            padding: 1rem;
+            border-radius: .25rem;
+            border: 2px dashed hsl(0, 0%, 50%);
+            background-color: hsl(0, 0%, 75%);
+        }
+
+        .docs\.sample {
+            font-family: "Lucida Console", Monaco, monospace;
+        }
+
+        .docs\.example .u\.item {
+            background-color: hsl(0, 0%, 75%);
+            border: 2px solid hsl(45, 100%, 100%);
+        }
+    </style>
+</head>
+<body>
+
+<!--<template is="u-temp" id="test">-->
+    <!--<div style="text-align: center">-->
+        <!--<u-bind>OUTER</u-bind>-->
+        <!--<template>-->
+            <!--<u-bind>INNER</u-bind>-->
+        <!--</template>-->
+    <!--</div>-->
+<!--</template>-->
+
+<div class="u.root">
+    <div class="u.container:top@* u.container:nowrap@*">
+
+        <div class="sidenav u.item u.hide@sm">
+
+            <div class="sidenav.container u.container:top@* u.container:pad-lg">
+                <div class="u.item:1/1@*">
+
+                    <template is="u-repeat" obj="content" as="elem">
+
+                        <template is="u-parse">
+                            <a class="sidenav.elem" href="#${elem.name}">${ctx.content.elem.name}</a>
+                        </template>
+
+                        <template is="u-repeat" repeat="elem.modifiers" as="modifier">
+                            <template is="u-parse">
+                                <a class="sidenav.mod" href="#${elem.name}:${modifier.name}">:${modifier.name}</a>
+                            </template>
+                        </template>
+
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <div class="docs u.item:grow@*">
+            <div class="docs.container u.container:right@* u.container:pad-lg u.container:vspace-lg"></div>
+
+            <template repeat="content" as="elem">
+                <a class="sidenav.elem" href="#${elem.name}">${elem.name}</a>
+                <!--<template repeat="elem" as="modifier">-->
+                    <!--<a class="sidenav.mod" href="#${elem.name}:${modifier.name}">:${modifier.name}</a>-->
+                <!--</template>-->
+            </template>
+
+            </div>
+        </div>
+
+
+
+<!--
+    <pb-placeholder id="">
+
+    </pb-placeholder>
+
+
+    <pb-repeat>
+
+    </pb-repeat>
+    <pb-if>
+
+    </pb-if>
+
+    <pb-template
+        id=""
+        pb-tag="a"
+        pb-href="#${elem.name}:${modifier.name}"
+        pb-class="{'foo':'green'}"
+    >:${modifier.name}</pb-template>
+-->
+
+
+</div>
+<script>
+
+    // <template is="pb-placeholder">
+    // <template is="pb-repeat">
+    // <template is="pb-bind">
+
+    const ctx = {
+        'content': [
+            {
+                name: 'u.root',
+                desc: 'Element required to clear negative margins for u.containers. It is only needed once immediately following the body tag.',
+                demo: false,
+                html: `<body>
+    <div class="u.root">
+        ...
+    </div>
+    </body>`
+            },
+            {
+                name: 'u.container',
+                desc: 'Parent element to u.items.',
+                modifiers: [
+                    {
+                        name: 'nowrap'
+                    },
+                    {
+                        name: 'left'
+                    },
+                    {
+                        name: 'right'
+                    },
+                    {
+                        name: 'center'
+                    },
+                    {
+                        name: 'repel'
+                    },
+                    {
+                        name: 'middle'
+                    },
+                    {
+                        name: 'top'
+                    },
+                    {
+                        name: 'bottom'
+                    },
+                    {
+                        name: 'baseline'
+                    },
+                    {
+                        name: 'tall'
+                    },
+                    {
+                        name: 'pad'
+                    },
+                    {
+                        name: 'hpad'
+                    },
+                    {
+                        name: 'vpad'
+                    },
+                    {
+                        name: 'vspace'
+                    },
+                    {
+                        name: 'hspace"'
+                    }
+                ]
+            }
+        ]
+    };
+
+    class Repeat extends HTMLTemplateElement {
+
+        attachedCallback() {
+
+            this.$scopes = this._scopes;
+
+            this.$iterKey = this.getAttribute('obj');
+            this.$iterObj = this._getObj(this.$iterKey);
+
+            this.$itemKey = this.getAttribute('as');
+
+            console.dir(this);
+            this.$render();
+        }
+
+        $render() {
+            const scope = this.$scopes[0];
+//            this.$iterObj[this.$itemKey] = undefined;
+            for (const item of this.$iterObj) {
+                scope[this.$iterKey] = item;
+                // RENDER HAPPENS HERE
+            }
+            scope[this.$iterKey] = undefined;
+        }
+
+        get _scopes() {
+            const scopes = [{}];
+            let elem = this;
+            while (elem = elem.parentElement) {
+                if (elem.$scopes !== undefined) {
+
+                    // (length - 1) skips ctx, that gets added below
+                    for (let i = 0; i < elem.$scopes.length - 1; i++) {
+                        scopes.push(elem.$scopes[i]);
+                    }
+                }
+            }
+            scopes.push(ctx);
+            return scopes;
+        }
+
+        _getObj(key) {
+
+            const keys = this.$iterKey.split('.');
+            let obj;
+
+            // select a scope
+            for (let i = 0, scope; scope = this.$scopes[i]; i++) {
+                obj = scope[keys[0]];
+                if (obj !== undefined) {
+                    break;
+                }
+            }
+
+            // no object found
+            if (obj === undefined) {
+                throw `Unable to find ${key}`;
+            }
+
+            // multiple keys
+            for (let i = 1; i < keys.length; i++) {
+                obj = obj[keys[i]];
+                if (obj === undefined) {
+                    throw `Unable to find ${key}`;
+                }
+            }
+
+            return obj;
+        }
+
+        _get(key) {
+            const objs = [this.$scope, ctx];
+            for (let i = 0, obj; obj = objs[i]; i++) {
+                if (obj[key] !== undefined) {
+                    return val;
+                }
+            }
+            return undefined;
+        }
+    }
+
+    document.registerElement('u-repeat', {
+        prototype: Repeat.prototype,
+        extends: 'template'
+    });
+
+    class Parse extends HTMLTemplateElement {
+        createdCallback() {
+        }
+
+        attachedCallback() {
+        }
+
+        $render() {
+
+        }
+    }
+
+    document.registerElement('u-parse', {
+        prototype: Parse.prototype,
+        extends: 'template'
+    });
+
+
+//    u.search();
+    //    function format(x = {foo: '1'}) {
+    //        console.dir(arguments);
+    //    }
+    //    format({
+    //        bar: 'BAR'
+    //    });
+
+    //    function escape(str) {
+    //        const replace = {
+    //            '<': '&lt;',
+    //            '>': '&gt;'
+    //        };
+    //        return str.replace(/[<>]/g, function(match) {
+    //            return replace[match];
+    //        });
+    //    }
+    //
+    //    function build() {
+    //        const nav = [
+    //            `<div class="u.item:1/1@*">`
+    //        ];
+    //
+    //        const docs = [
+    //            `<div class="u.item:1/1@*">
+    //                <div class="u.container:center@*">
+    //                    <h1 class="u.item logo">Unity</h1>
+    //                </div>
+    //            </div>`
+    //        ];
+    //
+    //        for (let elem of ctx) {
+    //
+    //            nav.push(`<a class="sidenav.elem" href="#${elem.name}">${elem.name}</a>`);
+    //
+    //            docs.push(
+    //                `<div class="u.item:1/1@*">
+    //                    <div class="u.container">
+    //                        <h3 id="${elem.name}" class="u.item:1/1@*">
+    //                            <a href="#${elem.name}">${elem.name}</a>
+    //                        </h3>
+    //                        <p class="u.item:1/1@*">${elem.desc}</p>
+    //                        ${ elem.html ? `<pre class="docs.sample u.item:1/1@*">${escape(elem.html)}</pre>` : ``}
+    //                        <div class="docs.example u.item:1/1@*"></div>
+    //                    </div>
+    //                </div>`
+    //            );
+    //
+    //            if (elem.modifiers) {
+    //                for (let modifier of elem.modifiers) {
+    //
+    //                    nav.push(`<a class="sidenav.mod" href="#${elem.name}:${modifier.name}">:${modifier.name}</a>`);
+    //
+    //                    docs.push(
+    //                        `<div class="u.item:11/12@*">
+    //                            <div class="u.container">
+    //                                <h4 id="${elem.name}:${modifier.name}" class="u.item:1/1@*">
+    //                                    <a href="#${elem.name}:${modifier.name}">${elem.name}:${modifier.name}</a>
+    //                                </h4>
+    //                                <p class="u.item:1/1@*">${modifier.desc}</p>
+    //                                ${ modifier.html ? `<pre class="docs.sample u.item:1/1@*">${escape(modifier.html)}</pre>` : ''}
+    //                                <div class="docs.example u.item:1/1@*"></div>
+    //                            </div>
+    //                        </div>`
+    //                    );
+    //                }
+    //            }
+    //        }
+    //
+    //        nav.push('</div>');
+    //
+    //        document.querySelector('.sidenav\\.container').innerHTML = nav.join('');
+    //        document.querySelector('.docs\\.container').innerHTML = docs.join('');
+
+</script>
+</body>
+</html>
