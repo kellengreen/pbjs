@@ -8,5 +8,8 @@
         "gulp-uglify": "latest",
         "gulp-rename": "latest",
         "gulp-include": "latest"
+    },
+    "scripts" : { 
+        "install" : "npm install gulp-cli -g && npm install http-server -g"
     }
 }

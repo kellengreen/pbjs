@@ -9,22 +9,17 @@
             background-color: hsl(0, 0%, 15%);
         }
     </style>
+   
 </head>
 <body>
 
-<script src="bin/pb-0.0.1.min.js"></script>
-<script>
+    <button is="pb-repeat">Hello, world!</button>
+    <template is="pb-if">if</template>
+    <template is="pb-elif">elif</template>
+    <template is="pb-else">else</template>
+    
+    <pb-base>base</pb-base>
 
-const proxy = new Proxy([], {
-    set: function(obj, name, value) {
-        console.log(`set: ${name}`);
-        obj[name] = value;
-        return true;
-    }
-});
-proxy.push(0);
-proxy[1] = 1;
-
-</script>
+    <script src="bin/pb.js" async></script> 
 </body>
 </html>

@@ -7,23 +7,23 @@ const include = require('gulp-include');
 const version = '0.0.1';
 
 function watchTask() {
-    gulp.start('js');
-    gulp.watch('./src/**/*.js', ['js']);
+    gulp.start('build');
+    gulp.watch('./src/**/*.js', ['build']);
 }
 
-function jsTask() {
+function buildTask() {
     gulp.src('src/bootstrap.js')
 
         .pipe(include())
             .on('error', console.log)
         
-        .pipe(rename(function(path) {
-            path.basename = `pb-${version}.min`;
+        .pipe(rename(path => {
+            path.basename = 'pb';
         }))
         
         .pipe(gulp.dest('./bin'));
 }
 
 gulp.task('watch', watchTask);
-gulp.task('js', jsTask);
+gulp.task('build', buildTask);
 
