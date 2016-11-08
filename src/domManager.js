@@ -1,41 +1,62 @@
-//=require ../global/main.js
 
-pb.DomManager = class {
+/**
+ * domManager
+ */
+
+pb.domManager = new class DomManager {
     /**
-     *
+     * DomManager
      */
     constructor() {
         /**
          *
          */
-        this.names = new Map();
+        this.registrations = new Map();
+        this.startObservations();
+    }
 
-        // listen for dom changes
+    startObservations() {
+        /**
+         * 
+         */
         const options = {
             childList: true,
             subtree: true,
-            attributes: true
+            attributes: true,
         };
         const callback = this.parseMutations.bind(this);
-        const observer = new MutationObserver(callback);
-        observer.observe(document.body, options);
+        this.observer = new MutationObserver(callback);
+        this.observer.observe(document.body, options);
     }
-
+    
     parseMutations(mutations) {
         /**
          *
          */
         mutations.forEach((mutation) => {
-            if (mutation.type === 'attributes') {
-                const elem = mutation.target;
-                const name = mutation.attributeName;
-                const value = elem.getAttribute(name);
-                this.attrChanged(elem, name, value);
-            } else if (mutation.type === 'childList') {
-                this.loopPbElems(mutation.addedNodes, this.pbElemAdded);
-                this.loopPbElems(mutation.removedNodes, this.pbElemRemoved);
-            }
+            console.dir(mutation);
+            // if (mutation.type === 'attributes') {
+            //     const elem = mutation.target;
+            //     const name = mutation.attributeName;
+            //     const value = elem.getAttribute(name);
+            //     this.attrChanged(elem, name, value);
+            // } else if (mutation.type === 'childList') {
+            //     this.loopPbElems(mutation.addedNodes, this.pbElemAdded);
+            //     this.loopPbElems(mutation.removedNodes, this.pbElemRemoved);
+            // }
         });
+    }
+
+    upgradeElement(elem) {
+        /**
+         * Upgrade element to  
+         */
+    }
+
+    downgradeElement(elem) {
+        /**
+         * 
+         */
     }
 
     loopPbElems(nodeList, callback) {
@@ -88,17 +109,11 @@ pb.DomManager = class {
         /**
          *
          */
-        if (this.names.has(name)) {
-            throw `Element "${name}" is already registered`;
-        }
-
-        this.names.set(name, PbElement);
+        this.registrations.set(name, PbElement);
 
         // find existing elements
-        const elems = document.querySelectorAll(`[pb-is^='${name}']`);
-        for (let i = 0, elem; elem = elems[i]; i++) {
-            let pbElement = new PbElement();
-            pbElement.promote(elem);
+        for (const elem of document.querySelectorAll(`[pb-is='${name}']`)) {
+            this.upgradeElement(elem);
         }
     }
 };

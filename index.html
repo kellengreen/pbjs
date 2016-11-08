@@ -6,20 +6,48 @@
     <style>
         body {
             color: hsl(0, 0%, 70%);
+            font: 18px/1.2 monospace;
             background-color: hsl(0, 0%, 15%);
+        }
+        button, input {
+            font: inherit;
         }
     </style>
    
 </head>
 <body>
+    <!--
+        pb
+        pb.DomManager
+        pb.Element
+        pb.Storage
+        HtmlElement
+    -->
 
-    <button is="pb-repeat">Hello, world!</button>
-    <template is="pb-if">if</template>
-    <template is="pb-elif">elif</template>
-    <template is="pb-else">else</template>
-    
-    <pb-base>base</pb-base>
-
-    <script src="bin/pb.js" async></script> 
+    <button id="add">Add</button>
+    <button id="remove">Remove</button>
+    <button id="mod">Mod</button>
+    <div id="container"></div>
+    <script>
+        let i = 0;
+        const container = document.querySelector('#container');
+        document.querySelector('#add').addEventListener('click', () => {
+            const elem = document.createElement('div');
+            elem.textContent = `[${i++}]`;
+            container.appendChild(elem)
+        });
+        document.querySelector('#remove').addEventListener('click', () => {
+            const elem = container.firstElementChild;
+            if (elem) container.removeChild(elem);
+        });        
+        document.querySelector('#mod').addEventListener('click', () => {
+            const elem = container.lastElementChild;
+            if (elem) {
+                elem.textContent = `{${i}}`;
+                elem.setAttribute('pb-foo', i++);
+            }
+        });              
+    </script>
+    <script src="bin/pb.js" async></script>
 </body>
 </html>

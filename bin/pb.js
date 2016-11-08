@@ -1,89 +1,123 @@
-const pb = {};
-pb.PbRepeat = class extends HTMLButtonElement {
+const pb = {
+    symbol: Symbol('pb'),
+};
+
+/**
+ * domManager
+ */
+
+pb.domManager = new class DomManager {
     /**
-     * 
+     * DomManager
      */
     constructor() {
         /**
-         * 
+         *
          */
-        super();
-        console.log('constructor');
+        this.registrations = new Map();
+        this.startObservations();
     }
 
-    connectedCallback() {
+    startObservations() {
         /**
          * 
          */
-        this.style.backgroundColor = 'red';
-        console.log('connected');        
-    }
-
-    disconnectedCallback() {
-        /**
-         * 
-         */
-        console.log('disconnected');        
+        const options = {
+            childList: true,
+            subtree: true,
+            attributes: true,
+        };
+        const callback = this.parseMutations.bind(this);
+        this.observer = new MutationObserver(callback);
+        this.observer.observe(document.body, options);
     }
     
-    attributeChangedCallback(attrName, oldVal, newVal) {
+    parseMutations(mutations) {
+        /**
+         *
+         */
+        mutations.forEach((mutation) => {
+            console.dir(mutation);
+            // if (mutation.type === 'attributes') {
+            //     const elem = mutation.target;
+            //     const name = mutation.attributeName;
+            //     const value = elem.getAttribute(name);
+            //     this.attrChanged(elem, name, value);
+            // } else if (mutation.type === 'childList') {
+            //     this.loopPbElems(mutation.addedNodes, this.pbElemAdded);
+            //     this.loopPbElems(mutation.removedNodes, this.pbElemRemoved);
+            // }
+        });
+    }
+
+    upgradeElement(elem) {
+        /**
+         * Upgrade element to  
+         */
+    }
+
+    downgradeElement(elem) {
         /**
          * 
          */
-        console.log('attributeChanged');          
     }
 
-    adoptedCallback() {
+    loopPbElems(nodeList, callback) {
         /**
-         * 
+         * Loop pbElements
          */
-        console.log('attributeChanged');         
+        for (let i = 0, elem; elem = nodeList[i]; i++) {
+            if (elem instanceof HTMLElement && elem.getAttribute('pb-is')) {
+                callback(elem);
+            }
+        }
     }
-}
 
-customElements.define('pb-repeat', pb.PbRepeat, {extends: 'button'});
-pb.If = class extends HTMLTemplateElement {
-    /**
-     * 
-     */
-    constructor() {
+    attrChanged(elem, name, value) {
         /**
-         * 
+         *
          */
-        super();
-        console.log('constructor');
+        if (name.starsWith('pb-')) {
+            if (name === 'pb-is') {
+
+            } else if (name === 'pb-id') {
+
+            } else if (name === 'pb-id') {
+
+            }
+            console.log('Changed');
+            console.dir(elem);
+            console.log(name);
+            console.log(value);
+        }
     }
 
-    connectedCallback() {
+    pbElemAdded(elem) {
         /**
-         * 
+         *
          */
-        console.log('connected');        
+        console.log('Added');
+        console.dir(elem);
     }
 
-    disconnectedCallback() {
+    pbElemRemoved(elem) {
         /**
-         * 
+         *
          */
-        console.log('disconnected');        
+        console.log('Removed');
+        console.dir(elem);
     }
-    
-    attributeChangedCallback(attrName, oldVal, newVal) {
+
+    register(name, PbElement) {
         /**
-         * 
+         *
          */
-        console.log('attributeChanged');          
+        this.registrations.set(name, PbElement);
+
+        // find existing elements
+        for (const elem of document.querySelectorAll(`[pb-is='${name}']`)) {
+            this.upgradeElement(elem);
+        }
     }
-
-    adoptedCallback() {
-        /**
-         * 
-         */
-        console.log('attributeChanged');         
-    }
-
-}
-
-customElements.define('pb-if', pb.If, {extends: 'template'});
-
+};
 

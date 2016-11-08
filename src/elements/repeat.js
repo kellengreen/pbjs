@@ -15,7 +15,7 @@ pb.PbRepeat = class extends HTMLButtonElement {
          * 
          */
         this.style.backgroundColor = 'red';
-        console.log('connected');        
+        console.log('connected');
     }
 
     disconnectedCallback() {
@@ -36,7 +36,7 @@ pb.PbRepeat = class extends HTMLButtonElement {
         /**
          * 
          */
-        console.log('attributeChanged');         
+        console.log('adopted');         
     }
 }
 
