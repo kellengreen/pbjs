@@ -29,7 +29,7 @@ pb.domManager = new class DomManager {
         };
         const callback = this.parseMutations.bind(this);
         this.observer = new MutationObserver(callback);
-        this.observer.observe(document.body, options);
+        // this.observer.observe(document.body, options);
     }
     
     parseMutations(mutations) {
@@ -75,21 +75,24 @@ pb.domManager = new class DomManager {
 
     attrChanged(elem, name, value) {
         /**
-         *
+         * Call elemManager method on attribute change.
          */
-        if (name.starsWith('pb-')) {
-            if (name === 'pb-is') {
-
-            } else if (name === 'pb-id') {
-
-            } else if (name === 'pb-id') {
-
+        const elemManager = elem[pb.symbol];
+        if (elemManager) {
+            const methodName = `${this.toCamelCase(name)}Changed`;
+            if (typeof elemManager[methodName] === 'function') {
+                elemManager[methodName](value);
             }
-            console.log('Changed');
-            console.dir(elem);
-            console.log(name);
-            console.log(value);
         }
+    }
+
+    toCamelCase(attrName) {
+        /**
+         * Converts "foo-bar" to "fooBar".
+         */
+        return name.replace(/-(.)/g, (m, p) => { 
+            return p.toUpperCase();
+        });
     }
 
     pbElemAdded(elem) {
@@ -118,6 +121,52 @@ pb.domManager = new class DomManager {
         for (const elem of document.querySelectorAll(`[pb-is='${name}']`)) {
             this.upgradeElement(elem);
         }
+    }
+};
+
+
+/**
+ * ElemManager
+ */
+
+pb.ElemManager = class ElemManager {
+    /**
+     * ElemManager
+     */
+    constructor(element) {
+        /**
+         *
+         */
+        this.element = element;
+
+        this.element[pb.symbol] = this;
+    }
+
+    attached() {
+        /**
+         * Callback for when element is attached to the DOM.
+         */
+        console.log(`attached: ${this.element}`);
+    }
+
+    detached() {
+        /**
+         * Callback for when element is detached from the DOM.
+         */
+        console.log(`detached: ${this.element}`);        
+    }
+
+    attrChanged(key, value) {
+        /**
+         * Callback for when element is detached from the DOM. 
+         */
+        console.log(`attrChanged: ${this.element}`);        
+    }
+
+    pbIsChanged(value) {
+        /**
+         * 
+         */
     }
 };
 

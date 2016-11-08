@@ -17,12 +17,22 @@
 </head>
 <body>
     <!--
-        pb
-        pb.DomManager
-        pb.Element
-        pb.Storage
-        HtmlElement
+        [public]
+        pb.symbol
+        pb.domManager
+        pb.ElemManager
+        pb.listen("path", callback);
+        pb.register("name", ElemManager);
+
+        [private]
+        pb._storage
+
+        element.$elemManager
     -->
+
+    <div pb-is="hello-world">
+        <p>Hello, world!</p>
+    </div>
 
     <button id="add">Add</button>
     <button id="remove">Remove</button>
@@ -48,6 +58,21 @@
             }
         });              
     </script>
-    <script src="bin/pb.js" async></script>
+
+    <script src="bin/pb.js"></script>
+    <script>
+        class MyManager extends pb.ElemManager {
+            f() {
+                console.log(this);
+            }
+        }
+
+        const elem = document.createElement('div');
+        const myManager = new MyManager(elem);
+        const f = myManager.f;
+        f();
+        myManager.f();
+
+    </script>    
 </body>
 </html>
