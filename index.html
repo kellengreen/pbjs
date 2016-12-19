@@ -9,27 +9,12 @@
             font: 18px/1.2 monospace;
             background-color: hsl(0, 0%, 15%);
         }
-        button, input {
+        button {
             font: inherit;
         }
     </style>
-   
 </head>
 <body>
-    <!--
-        [public]
-        pb.symbol
-        pb.domManager
-        pb.ElemManager
-        pb.listen("path", callback);
-        pb.register("name", ElemManager);
-
-        [private]
-        pb._storage
-
-        element.$elemManager
-    -->
-
     <div pb-is="hello-world">
         <p>Hello, world!</p>
     </div>
@@ -48,31 +33,50 @@
         });
         document.querySelector('#remove').addEventListener('click', () => {
             const elem = container.firstElementChild;
-            if (elem) container.removeChild(elem);
-        });        
+            if (elem) {
+                container.removeChild(elem);
+            }
+        });
         document.querySelector('#mod').addEventListener('click', () => {
             const elem = container.lastElementChild;
             if (elem) {
                 elem.textContent = `{${i}}`;
                 elem.setAttribute('pb-foo', i++);
             }
-        });              
+        });
     </script>
 
-    <script src="bin/pb.js"></script>
+    <script src="bin/pb.js" defer></script>
     <script>
-        class MyManager extends pb.ElemManager {
-            f() {
-                console.log(this);
+        class A {
+            constructor() {
+                this.vA = 'A';
             }
+            mA() {}
+            static sA() {}
+        }
+        class B {
+            constructor() {
+                this.vB = 'B';
+            }
+            mB() {}
+        }        
+        class C extends A {
+            constructor() {
+                super();
+                this.vC = 'C'
+            }
+            mC() {}
         }
 
-        const elem = document.createElement('div');
-        const myManager = new MyManager(elem);
-        const f = myManager.f;
-        f();
-        myManager.f();
+        const D = Object.create(C.prototype, B);
 
-    </script>    
+        console.dir(A);
+        console.dir(new A());
+        console.dir(C);
+        console.dir(new C());
+        console.dir(D);
+        console.dir(new D());
+    </script>
 </body>
 </html>

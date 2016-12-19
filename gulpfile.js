@@ -1,6 +1,5 @@
 const gulp = require('gulp');
 const watch = require('gulp-watch');
-const uglify = require('gulp-uglify');
 const rename = require('gulp-rename');
 const include = require('gulp-include');
 
@@ -15,7 +14,7 @@ function buildTask() {
     gulp.src('src/bootstrap.js')
 
         .pipe(include())
-            .on('error', console.log)
+            .on('error', console.error) 
         
         .pipe(rename(path => {
             path.basename = 'pb';

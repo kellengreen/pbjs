@@ -1,8 +1,6 @@
-
 /**
  * domManager
  */
-
 pb.domManager = new class DomManager {
     /**
      * DomManager
@@ -108,7 +106,7 @@ pb.domManager = new class DomManager {
         console.dir(elem);
     }
 
-    register(name, PbElement) {
+    register(name, ElemManager) {
         /**
          *
          */
@@ -120,3 +118,5 @@ pb.domManager = new class DomManager {
         }
     }
 };
+
+pb.register = pb.domManager.register;

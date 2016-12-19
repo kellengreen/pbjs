@@ -1,18 +1,15 @@
-
 /**
- * ElemManager
+ * ElementManager
  */
-
-pb.ElemManager = class ElemManager {
+pb.ElementManager = class ElementManager {
     /**
-     * ElemManager
+     * ElementManager
      */
     constructor(element) {
         /**
          *
          */
         this.element = element;
-
         this.element[pb.symbol] = this;
     }
 
@@ -27,14 +24,14 @@ pb.ElemManager = class ElemManager {
         /**
          * Callback for when element is detached from the DOM.
          */
-        console.log(`detached: ${this.element}`);        
+        console.log(`detached: ${this.element}`);
     }
 
     attrChanged(key, value) {
         /**
          * Callback for when element is detached from the DOM. 
          */
-        console.log(`attrChanged: ${this.element}`);        
+        console.log(`attrChanged: ${this.element}`);
     }
 
     pbIsChanged(value) {
