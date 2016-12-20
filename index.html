@@ -6,18 +6,36 @@
     <style>
         body {
             color: hsl(0, 0%, 70%);
-            font: 18px/1.2 monospace;
+            font: 1.2em/1.2 monospace;
             background-color: hsl(0, 0%, 15%);
         }
+        
         button {
             font: inherit;
         }
     </style>
 </head>
 <body>
-    <div pb-is="hello-world">
-        <p>Hello, world!</p>
-    </div>
+
+    <template pb="bind" to="path.to.obj" as="obj">
+
+        <p>${obj.title}</p>
+        <a href="${obj.link}">See more</a>
+
+        <template pb="if" cond="${obj.img}">
+            <img src="${obj.img}">
+        </template>
+
+        <template pb="elif" cond="${defaults.obj_img}">
+            <img src="${defaults.obj_img}">
+        </template>
+
+        <template pb="else">
+            <a href="/support">Report error</a>
+        </template>
+
+    </template>
+    <!--RENDER HERE-->
 
     <button id="add">Add</button>
     <button id="remove">Remove</button>
@@ -45,38 +63,6 @@
             }
         });
     </script>
-
     <script src="bin/pb.js" defer></script>
-    <script>
-        class A {
-            constructor() {
-                this.vA = 'A';
-            }
-            mA() {}
-            static sA() {}
-        }
-        class B {
-            constructor() {
-                this.vB = 'B';
-            }
-            mB() {}
-        }        
-        class C extends A {
-            constructor() {
-                super();
-                this.vC = 'C'
-            }
-            mC() {}
-        }
-
-        const D = Object.create(C.prototype, B);
-
-        console.dir(A);
-        console.dir(new A());
-        console.dir(C);
-        console.dir(new C());
-        console.dir(D);
-        console.dir(new D());
-    </script>
 </body>
 </html>
