@@ -14,26 +14,30 @@ pb.domManager = new class DomManager {
          */
         this.registrations = new Map();
         this.startObservations();
+        // this.domReady = false;
+        this.setReady();
     }
 
-    ready() {
-        var w = window,
-            d = document,
-            s = {};
-
-        s.ready = function(callback) {
-            if (document.readyState === 'loading') {
-                var event = 'readystatechange';
-                document.addEventListener(event, function listener() {
-                    document.removeEventListener(event, listener);
-                        callback();
-                });
-            } else {
-                callback();
-            }
+    setReady() {
+        /**
+         * 
+         */
+        console.log(document.readyState);
+        if (document.readyState === 'loading') {
+            document.addEventListener('readystatechange', evt => {
+                
+                this.domReady();
+            });
+        } else {
+            this.domReady();
         }
+    }
 
-        w.shortcuts = s;
+    domReady() {
+        /**
+         * 
+         */
+        console.log(document.readyState);
     }
 
     startObservations() {
