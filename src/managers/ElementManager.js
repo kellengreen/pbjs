@@ -1,16 +1,22 @@
 /**
  * ElementManager
  */
-pb.ElementManager = class ElementManager {
+pb.ElementManager = class BaseManager {
     /**
      * ElementManager
      */
-    constructor(element) {
+    constructor(template) {
+        /**
+         * @param template
+         */
+        this.template = template;
+        this.template[pb.symbol] = this;
+    }
+
+    deconstructor() {
         /**
          *
          */
-        this.element = element;
-        this.element[pb.symbol] = this;
     }
 
     attached() {
@@ -36,7 +42,7 @@ pb.ElementManager = class ElementManager {
 
     pbIsChanged(value) {
         /**
-         * 
+         *
          */
     }
 };

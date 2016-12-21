@@ -20,14 +20,14 @@
     <template pb="bind" to="path.to.obj" as="obj">
 
         <p>${obj.title}</p>
-        <a href="${obj.link}">See more</a>
+        <a href="$[obj.link]">See more</a>
 
-        <template pb="if" cond="${obj.img}">
-            <img src="${obj.img}">
+        <template pb="if" cond="$[obj.img]">
+            <img src="$[obj.img]">
         </template>
 
-        <template pb="elif" cond="${defaults.obj_img}">
-            <img src="${defaults.obj_img}">
+        <template pb="elif" cond="$[defaults.obj_img]">
+            <img src="$[defaults.obj_img]">
         </template>
 
         <template pb="else">

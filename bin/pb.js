@@ -16,6 +16,26 @@ pb.domManager = new class DomManager {
         this.startObservations();
     }
 
+    ready() {
+        var w = window,
+            d = document,
+            s = {};
+
+        s.ready = function(callback) {
+            if (document.readyState === 'loading') {
+                var event = 'readystatechange';
+                document.addEventListener(event, function listener() {
+                    document.removeEventListener(event, listener);
+                        callback();
+                });
+            } else {
+                callback();
+            }
+        }
+
+        w.shortcuts = s;
+    }
+
     startObservations() {
         /**
          * 
@@ -116,27 +136,37 @@ pb.domManager = new class DomManager {
         this.registrations.set(name, PbElement);
 
         // find existing elements
-        for (const elem of document.querySelectorAll(`[pb-is='${name}']`)) {
+        for (const elem of document.querySelectorAll(`template[pb='${name}']`)) {
             this.upgradeElement(elem);
         }
     }
 };
+
+/**
+ * shortcuts
+ */
 
 pb.register = pb.domManager.register;
 
 /**
  * ElementManager
  */
-pb.ElementManager = class ElementManager {
+pb.ElementManager = class BaseManager {
     /**
      * ElementManager
      */
-    constructor(element) {
+    constructor(template) {
+        /**
+         * @param template
+         */
+        this.template = template;
+        this.template[pb.symbol] = this;
+    }
+
+    deconstructor() {
         /**
          *
          */
-        this.element = element;
-        this.element[pb.symbol] = this;
     }
 
     attached() {
@@ -162,7 +192,7 @@ pb.ElementManager = class ElementManager {
 
     pbIsChanged(value) {
         /**
-         * 
+         *
          */
     }
 };

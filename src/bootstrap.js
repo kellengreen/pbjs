@@ -1,3 +1,3 @@
 //=require global.js
 //=require domManager.js
-//=require ElementManager.js
+//=require managers/ElementManager.js
