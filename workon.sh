@@ -1,4 +1,4 @@
 #!/bin/bash
-http-server &
+http-server -c-1 &
 gulp watch &
 wait

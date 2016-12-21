@@ -1,40 +1,49 @@
+
 /**
- * domManager
+ * domController
  */
-pb.domManager = new class DomManager {
-    /**
-     * DomManager
-     */
+
+pb.domController = new class DomController {
+
     constructor() {
         /**
          *
          */
         this.registrations = new Map();
-        this.startObservations();
-        // this.domReady = false;
-        this.setReady();
+
+    
+        this.domReadyCompleted = false;
+        this.domReadyListener();
     }
 
-    setReady() {
+    domReadyListener() {
         /**
-         * 
+         * Calls domReadyCallback when the DOM is interactive
          */
-        console.log(document.readyState);
         if (document.readyState === 'loading') {
-            document.addEventListener('readystatechange', evt => {
-                
-                this.domReady();
-            });
+            const event = 'readystatechange';
+            const callback = () => {
+                document.removeEventListener(event, callback);         
+                this.domReadyCallback();
+            }
+            document.addEventListener(event, callback); 
         } else {
-            this.domReady();
+            this.domReadyCallback();
         }
     }
 
-    domReady() {
+    domReadyCallback() {
         /**
-         * 
+         * Callback for when DOM is interactive
          */
         console.log(document.readyState);
+        // for (const key, val of this.registrations.entries()) {
+        //     console.log(key);
+        //     console.log(val);
+        // }
+        // this.startObservations();
+
+        this.domReadyCompleted = true;
     }
 
     startObservations() {
@@ -48,7 +57,7 @@ pb.domManager = new class DomManager {
         };
         const callback = this.parseMutations.bind(this);
         this.observer = new MutationObserver(callback);
-        // this.observer.observe(document.body, options);
+        this.observer.observe(document.body, options);
     }
     
     parseMutations(mutations) {
@@ -79,17 +88,6 @@ pb.domManager = new class DomManager {
         /**
          * 
          */
-    }
-
-    loopPbElems(nodeList, callback) {
-        /**
-         * Loop pbElements
-         */
-        for (let i = 0, elem; elem = nodeList[i]; i++) {
-            if (elem instanceof HTMLElement && elem.getAttribute('pb-is')) {
-                callback(elem);
-            }
-        }
     }
 
     attrChanged(elem, name, value) {
@@ -147,4 +145,4 @@ pb.domManager = new class DomManager {
  * shortcuts
  */
 
-pb.register = pb.domManager.register;
+pb.register = pb.domController.register;
