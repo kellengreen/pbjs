@@ -1,3 +1,4 @@
 //=require core/pb.js
-//=require core/domController.js
-//=require managers/ElementManager.js
+//=require core/dom.js
+//=require core/storage.js
+//=require controllers/base.js

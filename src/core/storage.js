@@ -1,27 +1,19 @@
-//=require ../global/main.js
+class Storage {
 
-pb.Storage = class {
-    /**
-     *
-     */
     constructor() {
         /**
          *
          */
-        this[pb.Storage.symbol] = {
+        this[pb.symbol] = {
             'listeners': {}
         };
     }
 
-    static get new() {
+    static isPrimitive(val) {
         /**
-         *
+         * Primitive types: number, string, boolean, undefined, null, and symbol.
          */
-        const storage = new this;
-        return new Proxy(storage, {
-            get: this.get.bind(this),
-            set: this.set.bind(this)
-        });
+        return val === null || typeof val !== 'object';
     }
 
     static get(target, path) {
@@ -71,9 +63,18 @@ pb.Storage = class {
 		}
         return false;
     }
-};
+}
 
-/**
- * Private symbol used in storage instances to avoid naming collisions
- */
-pb.Storage.symbol = Symbol('hidden storage');
+class StorageObject {
+
+    static get new() {
+        /**
+         *
+         */
+        const storage = new this;
+        return new Proxy(storage, {
+            get: this.get.bind(this),
+            set: this.set.bind(this)
+        });
+    }
+}

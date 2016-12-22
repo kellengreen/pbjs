@@ -1,16 +1,16 @@
 /**
- * ElementManager
+ * Base Controller
  */
-pb.ElementManager = class BaseManager {
-    /**
-     * ElementManager
-     */
+
+pb.Base = class Base {
+
     constructor(template) {
         /**
          * @param template
          */
         this.template = template;
         this.template[pb.symbol] = this;
+        this.children = [];
     }
 
     deconstructor() {
@@ -46,3 +46,5 @@ pb.ElementManager = class BaseManager {
          */
     }
 };
+
+pb.register('base', pb.Base);

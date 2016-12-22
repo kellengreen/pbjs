@@ -18,13 +18,13 @@
 </head>
 <body>
 
-    <template pb="bind" to="path.to.obj" as="obj">
+    <template pb="base" to="path.to.obj" as="obj">
 
         <p>${obj.title}</p>
         <a href="$[obj.link]">See more</a>
 
         <template pb="if" cond="$[obj.img]">
-            <img src="$[obj.img]">
+            <img src="http://www.foobar.com/$[obj.img]">
         </template>
 
         <template pb="elif" cond="$[defaults.obj_img]">
@@ -36,7 +36,16 @@
         </template>
 
     </template>
-    <!--RENDER HERE-->
+
+    <script>
+
+
+        pb.register('foo-bar', class FooBar extends pb.Base {
+
+        });
+        const storage = new Storage();
+
+    </script>
 
     <button id="add">Add</button>
     <button id="remove">Remove</button>

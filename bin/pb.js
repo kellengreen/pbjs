@@ -1,33 +1,61 @@
-const pb = {
-    symbol: Symbol('pb'),
+/*
+    [Properties]
+        symbol
+    [Functions]
+        register    (name)      (Controller)
+        listen      (path)      (callback)
+    [Contollers]
+        Base
+        Repeat
+        If
+        ElseIf
+        Else
+    [Unclassified]
+        set
+        get
+        listen
+*/
+
+const pb = function(path) {
+
 };
+
+pb.symbol = Symbol('pb');
+
+pb.watch = path => {
+
+}
+
+pb[pb.symbol] = {
+
+};
+
 
 /**
  * domController
  */
 
-pb.domController = new class DomController {
+pb.dom = new class Dom {
 
     constructor() {
         /**
          *
          */
-        this.registrations = new Map();
-
-    
-        this.domReadyCompleted = false;
+        this.controllers = new Map();
+        this.domIsReady = false;
         this.domReadyListener();
     }
 
     domReadyListener() {
         /**
-         * Calls domReadyCallback when the DOM is interactive
+         * Calls callback when the DOM is interactive
          */
         if (document.readyState === 'loading') {
             const event = 'readystatechange';
             const callback = () => {
-                document.removeEventListener(event, callback);         
+                document.removeEventListener(event, callback);
                 this.domReadyCallback();
+                this.domIsReady = true;
             }
             document.addEventListener(event, callback); 
         } else {
@@ -39,14 +67,28 @@ pb.domController = new class DomController {
         /**
          * Callback for when DOM is interactive
          */
-        console.log(document.readyState);
-        // for (const key, val of this.registrations.entries()) {
-        //     console.log(key);
-        //     console.log(val);
-        // }
+        for (const [name, Controller] of this.controllers.entries()) {
+            this.upgradeElements(name, Controller);
+        }
         // this.startObservations();
+    }
 
-        this.domReadyCompleted = true;
+    upgradeElements(name, Controller) {
+        /**
+         * Upgrades new template elements
+         */
+        const elems = document.querySelectorAll(`template[pb='${name}']`);
+        for (const elem of elems) {
+            if (elem[pb.symbol] === undefined) {
+                elem[pb.symbol] = new Controller(elem);
+            }
+        }
+    }
+
+    downgradeTemplate(elem) {
+        /**
+         * 
+         */
     }
 
     startObservations() {
@@ -81,18 +123,6 @@ pb.domController = new class DomController {
         });
     }
 
-    upgradeElement(elem) {
-        /**
-         * Upgrade element to  
-         */
-    }
-
-    downgradeElement(elem) {
-        /**
-         * 
-         */
-    }
-
     attrChanged(elem, name, value) {
         /**
          * Call elemManager method on attribute change.
@@ -115,54 +145,113 @@ pb.domController = new class DomController {
         });
     }
 
-    pbElemAdded(elem) {
+    register(name, Controller) {
         /**
-         *
+         * @param name
+         * @param Controller
          */
-        console.log('Added');
-        console.dir(elem);
-    }
-
-    pbElemRemoved(elem) {
-        /**
-         *
-         */
-        console.log('Removed');
-        console.dir(elem);
-    }
-
-    register(name, ElemManager) {
-        /**
-         *
-         */
-        this.registrations.set(name, PbElement);
-
-        // find existing elements
-        for (const elem of document.querySelectorAll(`template[pb='${name}']`)) {
-            this.upgradeElement(elem);
+        this.controllers.set(name, Controller);
+        if (this.domIsReady) {
+            this.upgradeElements(name, Controller);
         }
     }
 };
 
+pb.register = pb.dom.register.bind(pb.dom);
+
+class Storage {
+
+    constructor() {
+        /**
+         *
+         */
+        this[pb.symbol] = {
+            'listeners': {}
+        };
+    }
+
+    static isPrimitive(val) {
+        /**
+         * Primitive types: number, string, boolean, undefined, null, and symbol.
+         */
+        return val === null || typeof val !== 'object';
+    }
+
+    static get(target, path) {
+        /**
+         * Trap for get requests on storage instances
+         */
+        console.log(`get: ${path.toString()}`);
+        return target[path];
+    }
+
+    static set(target, path, value) {
+        /**
+         * Trap for Set requests to storage instances
+         */
+        console.log(`set: ${path}`);
+        target[path] = value;
+
+        const listeners = target[this.symbol].listeners;
+
+        if (listeners[path]) {
+            listeners[path].forEach(function(callback) {
+                callback(value);
+            });
+        }
+
+        return true;
+    }
+
+    static listen(storage, path, callback) {
+        /**
+         * Add listener to storage instance
+         */
+        const listeners = storage[this.symbol].listeners;
+		if (listeners[path] === undefined) {
+		    listeners[path] = new Set()
+        }
+		listeners[path].add(callback);
+    }
+
+    static ignore(storage, path, callback) {
+        /**
+         * Remove listener from storage instance
+         */
+        const listeners = storage[this.symbol].listeners;
+		if (listeners[path]) {
+		    return listeners[path].delete(callback);
+		}
+        return false;
+    }
+}
+
+class StorageObject {
+
+    static get new() {
+        /**
+         *
+         */
+        const storage = new this;
+        return new Proxy(storage, {
+            get: this.get.bind(this),
+            set: this.set.bind(this)
+        });
+    }
+}
 /**
- * shortcuts
+ * Base Controller
  */
 
-pb.register = pb.domController.register;
+pb.Base = class Base {
 
-/**
- * ElementManager
- */
-pb.ElementManager = class BaseManager {
-    /**
-     * ElementManager
-     */
     constructor(template) {
         /**
          * @param template
          */
         this.template = template;
         this.template[pb.symbol] = this;
+        this.children = [];
     }
 
     deconstructor() {
@@ -199,3 +288,4 @@ pb.ElementManager = class BaseManager {
     }
 };
 
+pb.register('base', pb.Base);
