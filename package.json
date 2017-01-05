@@ -10,6 +10,6 @@
         "gulp-include": "latest"
     },
     "scripts" : { 
-        "install" : "npm install gulp-cli -g && npm install http-server -g"
+        "install" : "npm install -g gulp-cli && npm install -g http-server && npm install -g mocha"
     }
 }

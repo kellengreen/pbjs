@@ -177,32 +177,6 @@ class Storage {
         return val === null || typeof val !== 'object';
     }
 
-    static get(target, path) {
-        /**
-         * Trap for get requests on storage instances
-         */
-        console.log(`get: ${path.toString()}`);
-        return target[path];
-    }
-
-    static set(target, path, value) {
-        /**
-         * Trap for Set requests to storage instances
-         */
-        console.log(`set: ${path}`);
-        target[path] = value;
-
-        const listeners = target[this.symbol].listeners;
-
-        if (listeners[path]) {
-            listeners[path].forEach(function(callback) {
-                callback(value);
-            });
-        }
-
-        return true;
-    }
-
     static listen(storage, path, callback) {
         /**
          * Add listener to storage instance
@@ -226,19 +200,42 @@ class Storage {
     }
 }
 
-class StorageObject {
+const ref = Symbol('ref');
+const parent = Symbol('parent');
 
-    static get new() {
-        /**
-         *
-         */
-        const storage = new this;
-        return new Proxy(storage, {
-            get: this.get.bind(this),
-            set: this.set.bind(this)
-        });
-    }
+const create = (val, target=undefined, key=undefined) => {
+    console.log(`create: ${key}`);
+    val[ref] = key;
+    val[parent] = target;
+    return new Proxy(val, {get, set});
 }
+
+const get = (target, key) => {
+    console.log(`get: ${path(target, key)}`);
+    return target[key];
+}
+
+const set = (target, key, val) => {
+    console.log(`set: ${path(target, key)}`);
+    if (val === null || typeof val !== 'object') {
+        target[key] = val;
+    } else {
+        target[key] = create(val, target, key);
+    }
+    return true;
+}
+
+const path = (target, key) => {
+    const keys = [];
+    while (target[parent] !== undefined) {
+        keys.unshift(target[ref]);
+        target = target[parent];
+    }
+    keys.push(key);
+    return keys.join('.');
+}
+
+
 /**
  * Base Controller
  */
