@@ -21,7 +21,22 @@ const pb = {};
                 deleteProperty: this.deleteHandler.bind(this),
             };
             target[this.listeners] = {};
+
+            target = this.proxify()
+
             return new Proxy(target, handler);
+        }
+
+        static proxifyObject(object) {
+            const keys = Reflect.ownKeys(object);
+            keys.forEach(key => {
+                if (key !== this.liseners) {
+                    const val = object[key];
+                    if (this.isPrimitive(val) === false) {
+                        
+                    }
+                }
+            });
         }
 
         static getHandler(target, key) {
@@ -44,6 +59,13 @@ const pb = {};
             }
 
             return true;
+        }
+
+        static setObject(object) {
+            const keys = Reflect.ownKeys(object);
+            keys.forEach(key => {
+
+            });
         }
 
         static deleteHandler(target, key) {
