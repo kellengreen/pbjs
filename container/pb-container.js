@@ -8,15 +8,19 @@
             this.attrs = new Map();
         }
 
+        static get foo() {
+            return 'FOO';
+        }
+
         /**
          *
          */
         connectedCallback() {
             // call attribute listeners
-            for (const [attr, callback] of this.attrs) {
-                if (this.hasAttribute(attr)) {
-                    const val = this.getAttribute(attr);
-                    callback(attr, val);
+            for (const [attrName, callback] of this.attrs) {
+                if (this.hasAttribute(attrName)) {
+                    const attrVal = this.getAttribute(attrName);
+                    callback(attrName, attrVal);
                 }
             }
         }
@@ -30,6 +34,7 @@
         attributeChangedCallback(attrName, oldVal, newVal) {
             if (this.attrs.has(attrName)) {
                 const callback = this.attrs.get(attrName);
+                // We swap newVal and oldVal on purpose.
                 callback(attrName, newVal, oldVal);
             }
         }
@@ -41,8 +46,32 @@
          */
         constructor() {
             super();
+            window.foo=this;
+            this.uniqueClass = `.pb\\.container\\:${this.generateClass()}`;
+            
             this.styleSheetIndexes = {};
-            this.breakpoints = new Map([
+
+            this.layouts = new Map();
+
+            // set layout callbacks
+            const layoutCallback = this.setLayoutStyle.bind(this);
+            this.attrs.set('layout', layoutCallback);
+            for (const breakpoint of this.constructor.breakpoints.keys()) {
+                this.attrs.set(`layout@${breakpoint}`, layoutCallback);
+            };
+            
+            //
+            // PbContainer.styleSheet.insertRule(`${this.uniqueClass} {
+                
+            // }`, 0);
+            
+        }
+        
+        /**
+         * 
+         */
+        static get breakpoints() {
+            return new Map([
                 ['sm',       '(max-width: 48rem)'],
                 ['md-down',  '(max-width: 62rem)'],
                 ['md',       '(min-width: 48rem) and (max-width: 62rem)'],
@@ -52,17 +81,6 @@
                 ['lg-up',    '(min-width: 62rem)'],
                 ['xl',       '(min-width: 75rem)'],
             ]);
-
-            // set layout callbacks
-            const layoutCallback = this.setLayoutStyle.bind(this);
-            this.attrs.set('layout', layoutCallback);
-            for (const breakpoint of this.breakpoints.keys()) {
-                this.attrs.set(`layout@${breakpoint}`, layoutCallback);
-            };
-            
-            // set default styling
-            this.style.display = 'grid';
-            
         }
 
         /**
@@ -72,19 +90,46 @@
             if (this.styleElem === undefined) {
                 this.styleElem = document.createElement('style');
                 document.head.appendChild(this.styleElem);
+
+                // Add default styles
+                this.styleSheet.insertRule(`pb-container {
+                    display: grid;
+                }`, 0);
             }
-            return this.styleElem;
+
+            return this.styleElem.sheet;
+        }
+
+        generateClass() {
+            let uid = '';
+            for (let i = 0; i < 4; i++) {
+                uid += Math.floor(Math.random() * 256).toString(16);
+            }
+            return `.pb\\.container\\:${uid}`;
         }
 
         /**
          * @param {string} layout
          * @param {string} breaklayout
          */
-        setLayoutStyle(key, val) {
-            const re = new RegExp(/\s*(\d+)\(([^\)]*)\)\s*/g);
+        setLayoutStyle(attrName, attrVal) {
             let match;
-            while ((match = re.exec(val)) !== null) {
-                console.log(`${match[1]}: "${match[2]}"`);
+            let breakpoint;
+
+            // match = attrName.match(/@(.+)/);
+            // if (match) {
+            //     breakpoint = match[1];
+            //     if (this.breakpoints.get())
+            // }
+
+            const re = new RegExp(/\s*(\d+)\(([^\)]*)\)\s*/g);
+            while ((match = re.exec(attrVal)) !== null) {
+                const child = match[1];
+                const width = match[2] || '1fr';
+                // this.
+                // // if (this.layouts.has())
+                // // this.
+                console.log(`${child}: "${width}"`);
             }
         }
     }
