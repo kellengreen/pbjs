@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <title>pb.js</title>
+    <style>
+        :root {
+            --gap: 10px;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            color: hsl(0, 0%, 70%);
+            font-family: monospace;
+            font-size: 1.2rem;
+            line-height: 1.2;
+            background-color: hsl(0, 0%, 0%);
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 5px; 
+            padding: var(--gap);
+            border: 5px solid hsl(33, 100%, 30%);
+            /*margin-left: -5px;*/
+            /*margin-top: -5px;*/
+        }
+        .item {
+            margin-left: var(--gap);
+            margin-top: var(--gap);
+            font-size: 1.5rem;
+            border: 5px solid hsl(200, 100%, 30%);
+            text-align: center;
+            word-break: break-all;
+        }
+        .item-6 {
+            width: calc(50% - var(--gap));
+        }
+
+        .item-12 {
+            width: calc(100% - var(--gap));
+        }
+    </style>
+</head>
+<body>
+    <div class=" container">
+        <div class="item item-6">0</div>
+        <div class="item item-12">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+        <div class="item">7</div>
+        <div class="item">8</div>
+        <div class="item">9</div>
+        <div class="item">A</div>
+        <div class="item">B</div>
+    </div>
+    <div class=" container">
+        <div class="item">0</div>
+        <div class="item">1</div>
+    </div>
+
+    <!--
+        left img thumb right
+        left img title right
+        left img desc  right
+     -->
+
+</body>
+</html>
