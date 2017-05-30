@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>pb.js</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+        }
+
+        .viewport {
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 0fr;
+        }
+        
+        .toolbar {
+            display: grid;
+            grid-template-columns: 10px 1fr;
+            background-color: hsl(0, 0%, 50%);
+            height: 100%;
+        }
+
+        .toolbar\.resize {
+            cursor: ew-resize;
+            background-color:  hsl(0, 0%, 40%)
+        }
+
+        .toolbar\.content {
+            margin: 10px;
+        }
+
+        .workspace {
+            /* */
+            --width-xs: ;
+            --width-xs: 
+            --width-xs: 
+            --width-xs: 
+            /* space */
+            --space-none: 0;
+            --space-md:   1rem;
+            --space-lg:   2rem;
+        }
+
+        .pb-container {
+            border: 1px solid hsl(200, 50%, 50%);
+            padding: var(--space-md);
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-column-gap: var(--space-md);
+            grid-row-gap: var(--space-md);
+        }
+
+        .pb-item {
+            border: 1px solid hsl(100, 50%, 50%) 
+        }
+    </style>
+</head>
+<body>
+    <div class="viewport">
+        <div class="workspace">
+            <div class="pb-container">
+                <div class="pb-item" draggable>1</div>
+                <div class="pb-item" draggable>2</div>
+                <div class="pb-item" draggable>3</div>
+            </div>
+        </div>
+        <div class="toolbar">
+            <div class="toolbar.resize"></div>
+            <div class="toolbar.content">
+                <p>dskjhdsafsd fsdf sdfjkd</p>
+                <p>dskjhdsafsd fsdf sdfjkd</p>
+                <p>dskjhdsafsd fsdf sdfjkd</p>
+            </div>
+    </div>
+    <script>
+
+    </script>
+</body>
+</html>
