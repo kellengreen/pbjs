@@ -41,10 +41,10 @@
 
         .workspace {
             /* */
-            --width-xs: ;
+            /*--width-xs: ;
             --width-xs: 
             --width-xs: 
-            --width-xs: 
+            --width-xs: */
             /* space */
             --space-none: 0;
             --space-md:   1rem;
@@ -53,7 +53,7 @@
 
         .pb-container {
             border: 1px solid hsl(200, 50%, 50%);
-            padding: var(--space-md);
+            padding: var(--space-lg);
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             grid-column-gap: var(--space-md);
@@ -61,18 +61,21 @@
         }
 
         .pb-item {
-            border: 1px solid hsl(100, 50%, 50%) 
+            cursor: move;
+            border: 1px solid hsl(100, 50%, 50%);
+            height: 50px;
         }
+
     </style>
 </head>
 <body>
     <div class="viewport">
         <div class="workspace">
-            <div class="pb-container">
-                <div class="pb-item" draggable>1</div>
-                <div class="pb-item" draggable>2</div>
-                <div class="pb-item" draggable>3</div>
-            </div>
+            <pb-drag id="zero" class="pb-container">
+                <pb-drag id="one" class="pb-item">1</pb-drag>
+                <pb-drag id="two" class="pb-item">2</pb-drag>
+                <pb-drag id="three" class="pb-item">3</pb-drag>
+            </pb-drag>
         </div>
         <div class="toolbar">
             <div class="toolbar.resize"></div>
@@ -81,8 +84,141 @@
                 <p>dskjhdsafsd fsdf sdfjkd</p>
                 <p>dskjhdsafsd fsdf sdfjkd</p>
             </div>
+        </div>
     </div>
     <script>
+        class PbBase extends HTMLElement {
+            constructor() {
+                super();
+                this.listeners = [];
+            }
+
+            connectedCallback() {
+                // add listeners
+                for (const [event, listener] of this.listeners) {
+                    this.addEventListener(event, listener.bind(this));
+                }
+            }
+
+            disconnectedCallback() {
+                // remove listeners
+                for (const [event, listener] of this.listeners) {
+                    this.removeEventListener(event, listener.bind(this));
+                }
+            }
+        }
+
+        class PbDrag extends PbBase {
+            constructor() {
+                super();
+                this.draggable = true;
+                this.currentlyOver = null;
+
+                
+                this.listeners.push(['dragstart', this.onDragStart]);
+                this.listeners.push(['dragenter', this.onDragEnter]);
+                // this.listeners.push(['dragleave', this.onDragLeave]);
+                this.listeners.push(['dragend', this.onDragEnd]);
+                // this.listeners.push(['dragover', this.onDragOver]);
+                // this.listeners.push(['drop', this.onDrop]);
+            }
+
+            static 
+
+            onDragStart(evt) {
+                //  // Stop start drag from bubbling up.
+                evt.stopPropagation();
+
+                // Skip self
+                // if (evt.target !== this) {
+                //     return;
+                // }
+
+                console.log('onDragStart');
+                console.log(this.id);
+                console.log(evt.target.id);
+                console.log('-');
+            }
+            
+            onDragEnter(evt) {
+
+                console.log('onDragEnter');
+                console.log(this.id);
+                console.log(evt.target.id);
+                console.dir(evt);
+                console.log('-');
+
+                // skip self
+                if (evt.target === this) {
+                    return;
+                }
+
+
+
+                // only stop for siblings
+                let isSibling = false;
+                for (const elem of evt.target.parentElement.children) {
+                    if (this === elem) {
+                        isSibling = true;
+                        break;
+                    }
+                }
+
+                if (isSibling === false) {
+                    return;
+                }
+
+
+                console.log('onDragEnter');
+                console.log(this.id);
+                console.log(evt.target.id);
+                console.log('-');
+                this.style.filter = 'invert(100%)';
+
+
+
+                // only drop in siblings
+                for (const elem of this.parentElement.children) {
+                    // debugger
+                    if (evt.target === elem) {
+                        console.log('onDragEnter');
+                        console.log(this.innerText);
+                        this.style.filter = 'invert(100%)';
+                    }
+                }
+
+                                // evt.stopPropagation(); // Stop start drag from bubbling up. 
+
+            }
+            
+            // onDragOver(evt) {
+            //     console.log('onDragOver');
+            //     console.log(this.innerText);
+            // }
+            
+            // onDragLeave(evt) {
+            //     console.log('onDragLeave');
+            //     console.log(this.innerText);
+            //     this.style.filter = '';
+            // }
+            
+            // onDrop(evt) {
+            //     console.log('onDrop');
+            //     console.log(this.innerText);
+            // }
+
+            onDragEnd(evt) {
+                evt.stopPropagation();
+                console.log('onDragEnd');
+                console.log(this.id);
+            }
+        }
+
+        customElements.define('pb-drag', PbDrag);
+
+        class ResizableElement {
+
+        }
 
     </script>
 </body>
