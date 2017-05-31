@@ -19,8 +19,8 @@
 
         .viewport {
             height: 100%;
-            display: grid;
-            grid-template-columns: 1fr 0fr;
+            /*display: grid;
+            grid-template-columns: 1fr 0fr;*/
         }
         
         .toolbar {
@@ -51,6 +51,10 @@
             --space-lg:   2rem;
         }
 
+        pb-resizable {
+            border: 1px solid black;
+        }
+
         .pb-container {
             border: 1px solid hsl(200, 50%, 50%);
             padding: var(--space-lg);
@@ -69,6 +73,53 @@
     </style>
 </head>
 <body>
+    <style>
+        .resize {
+            --pad: 20px;
+            border: 1px solid red;
+            display: grid;
+            grid-template-columns: var(--pad) 1fr var(--pad);
+            grid-template-rows: var(--pad) 1fr var(--pad);
+        }
+        .resize > * {
+            border: 1px solid blue;
+        }
+
+        .resize > .area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .resize #up,
+        .resize #down {
+            cursor: ns-resize;
+        }
+
+        .resize #left,
+        .resize #right {
+            cursor: ew-resize;
+        }
+    </style>
+    <div class="resize">
+        <div></div>
+        <div id="up" class="area">
+            <span>&#8230</span>
+        </div>
+        <div></div>
+        <div id="right" class="area">&#8942</div>
+        <div class="content">
+            <p>dklsfjklds</p>
+            <p>dklsfjklds</p>
+            <p>dklsfjklds</p>
+            <p>dklsfjklds</p>
+            <p>dklsfjklds</p>
+        </div>
+        <div id="left" class="area">&#8942</div>
+        <div></div>
+        <div id="down" class="area">&#8230</div>
+        <div></div>
+    </div>
     <div class="viewport">
         <div class="workspace">
             <pb-drag id="zero" class="pb-container">
@@ -77,20 +128,118 @@
                 <pb-drag id="three" class="pb-item">3</pb-drag>
             </pb-drag>
         </div>
-        <div class="toolbar">
-            <div class="toolbar.resize"></div>
+        <pb-resizable pb-sides="all">
             <div class="toolbar.content">
                 <p>dskjhdsafsd fsdf sdfjkd</p>
                 <p>dskjhdsafsd fsdf sdfjkd</p>
                 <p>dskjhdsafsd fsdf sdfjkd</p>
             </div>
-        </div>
+        </pb-resizable>
     </div>
+
     <script>
+        class PbResizable extends HTMLElement {
+
+            constructor() {
+                super();
+                this.attachShadow({mode: 'open'});
+                this.shadowRoot.innerHTML = this.template;
+            }
+
+            pbSidesAttrChanged() {
+
+            }
+
+
+            get hEllipsis() {
+                return '&#8230';
+            }
+
+            get vEllipsis() {
+                return '&#8942';
+            }
+
+            get template() {
+                return `
+                    <style>
+                        :root {
+                            --pad: 10px
+                        }
+                        .container {
+                            display: grid;
+                            grid-template-columns: var(--pad) 1fr var(--pad);
+                            grid-template-areas: 
+                                "top top top"
+                                "left content right"
+                                "bottom bottom bottom";
+                        }
+                        #top {
+                            grid-area: top;
+                        }
+                        #right {
+                            grid-area: right;
+                        }
+                        #down {
+                            grid-area: down;
+                        }
+                        #left {
+                            grid-area: left;
+                        }
+                        slot {
+                            grid-area: content
+                        }
+                    </style>
+                    <div class="container">
+                        <div></div>
+                        <pb-resizable-area id="top">${this.hEllipsis}</pb-resizable-area>
+                        <pb-resizable-area id="right">${this.vEllipsis}</pb-resizable-area>
+                        <pb-resizable-area id="down">${this.hEllipsis}</pb-resizable-area>
+                        <pb-resizable-area id="left">${this.vEllipsis}</pb-resizable-area>
+                        <slot></slot>
+                    </div>
+                `;
+            }
+
+            connectedCallback() {
+
+            }
+
+            disconnectedCallback() {
+
+            }
+        }
+
+        customElements.define('pb-resizable', PbResizable);
+
+        class PbResizableArea extends HTMLElement {
+
+            constructor() {
+                super();
+                this.attachShadow({mode: 'open'});
+                this.shadowRoot.innerHTML = this.template;
+            }
+
+            get template() {
+                return `
+                    <style>
+                    
+                    </style>
+                    <slot></slot>
+                `;
+            }
+        }
+
+        customElements.define('pb-resizable-area', PbResizableArea);
+
+
+
+        const Pb = {};
+
         class PbBase extends HTMLElement {
             constructor() {
                 super();
                 this.listeners = [];
+                // this.attrs = new 
             }
 
             connectedCallback() {
@@ -122,9 +271,7 @@
                 // this.listeners.push(['dragover', this.onDragOver]);
                 // this.listeners.push(['drop', this.onDrop]);
             }
-
-            static 
-
+            
             onDragStart(evt) {
                 //  // Stop start drag from bubbling up.
                 evt.stopPropagation();
