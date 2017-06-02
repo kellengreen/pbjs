@@ -9,16 +9,31 @@
             background-color: hsl(0, 0%, 15%);
         }
     </style>
-    <script type="module" src="pb-repeat/define.js"></script>
+    <script type="module" src="elements/pb-repeat.js"></script>
     <script>
         foo = ['a', 'b', 'c'];
     </script>
 </head>
 <body>
 
-    <pb-repeat pb-for="const bar of foo.entries()">
+    <h4>Render</h4>
+    <pb-render pb-exp="const i = foo[0]">
         <template>
             <p>${bar}</p>
+        </template>
+    </pb-render>
+
+    <h4>For...of</h4>
+    <pb-repeat pb-for="const [i, bar] of foo.entries()">
+        <template>
+            <p>${i}: ${bar}</p>
+        </template>
+    </pb-repeat>
+    
+    <h4>For Loop</h4>
+    <pb-repeat pb-for="let i = 0; i < foo.length; i++">
+        <template>
+            <p>${i}: ${foo[i]}</p>
         </template>
     </pb-repeat>
 
