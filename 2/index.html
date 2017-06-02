@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>pb.js</title>
+    <style>
+        body {
+            color: hsl(0, 0%, 75%);
+            background-color: hsl(0, 0%, 15%);
+        }
+    </style>
+    <script type="module" src="pb-repeat/define.js"></script>
+    <script>
+        foo = ['a', 'b', 'c'];
+    </script>
+</head>
+<body>
+
+    <pb-repeat pb-for="const bar of foo.entries()">
+        <template>
+            <p>${bar}</p>
+        </template>
+    </pb-repeat>
+
+</body>
+</html>
