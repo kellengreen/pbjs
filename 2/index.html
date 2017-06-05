@@ -10,9 +10,7 @@
         }
     </style>
     <script type="module" src="elements/pb-repeat.js"></script>
-    <script>
-        foo = ['a', 'b', 'c'];
-    </script>
+    <script src="main.js"></script>
 </head>
 <body>
 
@@ -31,7 +29,7 @@
     </pb-repeat>
     
     <h4>For Loop</h4>
-    <pb-repeat pb-for="let i = 0; i < foo.length; i++">
+    <pb-repeat pb-for="let i = 0; i < foo.length; i++" pb-var"apple, sauce" pb-iter"foo">
         <template>
             <p>${i}: ${foo[i]}</p>
         </template>

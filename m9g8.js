@@ -6,10 +6,13 @@ class Dice {
     }
 
     *roll() {
-        const counter = new Array(this.numDice).fill(0);
+
+        if (this.numDice === 0) {
+            return;
+        }
         
-        let run = this.numDice === 0 ? false : true;
-        while (run) {
+        const counter = new Array(this.numDice).fill(0);
+        while (true) {
             
             // save to outcomes
             yield counter.reduce((array, idx) => {
@@ -23,7 +26,7 @@ class Dice {
                 if (counter[i] === this.sides.length - 1) {
                     // stop on last dice
                     if (i === this.numDice - 1) {
-                        run = false;
+                        return;
                     } 
                     // continue to next dice
                     else {
@@ -49,33 +52,33 @@ class XWingDice extends Dice {
 class RedDice extends XWingDice {
     constructor(numDice) {
         super(numDice, ['C','H','H','H','F','F','B','B']);
+        // super(numDice, ['H','H','F','B']);
     }
 
     static normal(numDice, {
-        spendableFocuses=0,
+        availableFocuses=0,
         availableRerolls=0,
     } = {}) {
         
-        let rollHits = 0;
-        let rollCount = 0;
-        
-        let rerollHits = 0;
-        let rerollCount = 0;
+        const results = [{
+            hits: 0,
+            rolls: 0,
+        }];
         
         for (const roll of new RedDice(numDice).roll()) {
             
-            let rollFocuses = spendableFocuses;
+            let focuses = availableFocuses;
             let misses = 0;
-            rollCount++;
+            results[0].rolls++;
             
             for (const dice of roll) {
                 if (dice === 'C' || dice === 'H') {
-                    rollHits++;
+                    results[0].hits++;
                 }
 
-                else if (rollFocuses >= 1 && dice === 'F') {
-                    rollHits++;
-                    rollFocuses--;
+                else if (focuses >= 1 && dice === 'F') {
+                    results[0].hits++;
+                    focuses--;
                 }
 
                 else {
@@ -83,39 +86,51 @@ class RedDice extends XWingDice {
                 }
             }
             
+            let rerollDice = availableRerolls > misses ? misses : availableRerolls;
 
-            if (misses > availableRerolls) {
-                // misses = availableRerolls;
-            }
+            for (let i = 1; i <= rerollDice; i++) {
 
-            for (const reroll of new RedDice(misses).roll()) {
-                rerollCount++;
-                for (const dice of reroll) {
-                    if (dice === 'C' || dice === 'H') {
-                        rerollHits++;
-                    }
+                if (results[i] === undefined) {
+                    results[i] = {
+                        hits: 0,
+                        total: 0,
+                        rolls: 0,
+                    };
+                }
+            
+                results[i].rolls++;
 
-                    else if (rollFocuses >= 1 && dice === 'F') {
-                        rerollHits++;
-                        rollFocuses--;
+                for (const roll of new RedDice(1).roll()) {
+
+                    results[i].total++;
+
+                    for (const dice of roll) {;
+    
+                        if (dice === 'C' || dice === 'H') {
+                            results[i].hits++;
+                        }
+
+                        else if (focuses >= 1 && dice === 'F') {
+                            results[i].hits++;
+                            focuses--;
+                        }
                     }
                 }
             }
         }
 
-        const rollAvg = rollHits / rollCount;
-        const rerollAvg = rerollHits / rerollCount || 0;
-        const totalAvg = rollAvg + (rerollAvg * (1 - rollAvg));
+        // console.log(results);
 
-        console.log(rollHits); 
-        console.log(rollCount);
-        console.log(rollAvg);
-        console.log('');
-        console.log(rerollHits); 
-        console.log(rerollCount);
-        console.log(rerollAvg);
-        console.log('');
-        console.log(totalAvg);
+        return results.reduce((acc, val, idx) => {
+            let avg;
+            if (idx === 0) {
+                avg = val.hits / val.rolls;
+            } else {
+                avg = (val.rolls / results[0].rolls) * (val.hits / val.total)
+            }
+            console.log(avg);
+            return acc + avg;
+        }, 0); 
     } 
 }
 
@@ -130,34 +145,9 @@ class GreenDice extends XWingDice {
 }
 
 
-RedDice.normal(2, {
-    spendableFocuses: 0,
-    availableRerolls: Infinity,
+const avg = RedDice.normal(3, {
+    availableFocuses: 1,
+    availableRerolls: 1,
 });
-
-
-// let c = 0;
-// let i = 0;
-// while (true) {
-//     if (Math.random() < .5) {
-//         i++
-//     } else {
-//         if (Math.random() >= .5) {
-//             i++
-//         } 
-//     }
-//     c++; 
-//     console.log(i / c)
-// }
-// console.log(red.avg(red.normal({tl:true})));
-// console.log(red.avg(red.normal({focus:true})));
-// console.log(red.avg(red.normal({focus:true, tl:true})));
-// console.log(red.avg(red.poe()));
-
-// console.log(new RedDice(1).outcomes)
-// console.log(new RedDice(0).outcomes)
-
-// for (const result of results) {
-//     console.log(result);
-// }
-// console.log(`Total Results: ${results.length}`);
+console.log('');
+console.log(avg);

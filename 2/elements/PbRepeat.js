@@ -26,7 +26,7 @@ class PbRepeat extends PbTemplatable {
         this.$renderFn = new Function(`
             'use strict';
             let $$ = '';
-            for (${expression}) {
+            for (const [${vars}] of ${iter}.entries()) {
                 $$ += \`${this.$template.innerHTML}\`;
             } 
             return $;

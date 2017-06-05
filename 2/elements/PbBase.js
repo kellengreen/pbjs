@@ -24,7 +24,7 @@ class PbBase extends HTMLElement {
     attributeChangedCallback(attrName, oldVal, newVal) {
         if (this.$attributes.has(attrName)) {
             const callbackName = `$on${attrName.replace(/^.|-./g, (match, p1) => {
-                debugger;
+                // debugger;
                 return match.toUpperCase();
             })}AttrChanged`;
             
