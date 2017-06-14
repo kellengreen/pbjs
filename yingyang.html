@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>pb.js</title>
+    <style>
+        body {
+            background-color: hsl(0, 0%, 30%)
+        }
+        .yinyang {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            align-items: center;
+            background: linear-gradient(black 50%, white 0);
+            border-radius: 100px;
+            height: 200px;
+            width: 200px;
+        }
+        .yin {
+            width: 100%;
+            height: 25px;
+            display: grid;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-radius: 100%;
+        }
+        .yin .dot {
+            display: block;
+            background-color: black;
+            border-radius: 20px;
+            /*height: 40px;
+            width: 40px;*/
+        }
+        .yang {
+            width: 100%;
+            height: 25px;
+            display: grid;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+            border-radius: 50px;
+
+        }
+        .yang .dot {
+            display: block;
+            background-color: white;
+            border-radius: 20px;
+            /*height: 40px;
+            width: 40px;*/
+        }
+    </style>
+</head>
+<body>
+    <div class="yinyang">
+        <div class="yin">
+            <div class="dot"></div>
+        </div>
+        <div class="yang">
+            <div class="dot"></div>
+        </div>
+    </div>
+</body>
+</html>
