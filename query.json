@@ -1,15 +1,72 @@
 [
     {
-        "operation": "create",
-        "id": "123",
-        "props": {
-            "str": "bar",
-            "bool": true,
-            "byte": "WEci23=",
-            "int": 123,
-            "float": 123.45,
-            "null": null
+        "method": "get",
+        "kind": "apps",
+        "id": "120398",
+        "fetch": {
+            "id": null,
+            "name": null,
+            "description": null,
+            "owner": {
+                "id": null,
+                "username": null
+            },
+            "editors": {
+                "name": null,
+                "_limit": 10,
+                "_offset": 0
+            },
+            "releases": {
+                "id": null,
+                "supportedVersions": null
+            },
+            "release": {
+                "id": null,
+                "name": null
+            }
+        }
+    },
+
+    {
+        "method": "query",
+        "kind": "apps",
+        "query": {
+            "name": {
+                "starts_with": "apple"
+            },
+            "owner.id": {
+                "is": "admin"
+            }
         },
-        "": ""
+        "limit": 10,
+        "offset": 1
+    },
+
+    {
+        "method": "create",
+        "kind": "kind",
+        "id": "12329384",
+        "properties": {
+            "name": "foo",
+            "owner": "2340938",
+            "releases": [
+                
+            ]
+        }
+    },
+
+    {
+        "method": "patch",
+        "kind": "kind",
+        "id": "1232938",
+        "properties": {
+            "name": "bar"
+        }
+    },
+
+    {
+        "method": "delete",
+        "kind": "apps",
+        "id": "1093248"
     }
 ]
