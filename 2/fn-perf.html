@@ -30,7 +30,7 @@
         for (const fn of fns) {
             let start = performance.now();
             for (let i = 0; i < count; i++) {
-                fn(1, 2);
+                fn();
             }
             let end = performance.now();
             console.log(end - start);

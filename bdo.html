@@ -9,6 +9,14 @@
         }
     </style>
     <script>
+        class BdoDefinition {
+            constructor() {
+
+            }
+            static get foo() {
+                
+            }
+        }
 
         class Utf8 {
             static getNextChar(buffer) {
@@ -32,13 +40,22 @@
 
         class Endianness {
             static isLittle() {
-                var buffer = new ArrayBuffer(2);
+                const buffer = new ArrayBuffer(2);
+                const view = new DataView(buffer);
                 new DataView(buffer).setInt16(0, 256, true);
                 return new Int16Array(buffer)[0] === 256;
             }
 
             static isBig() {
                 
+            }
+
+            static toBig(buffer) {
+
+            }
+
+            static toLittle(buffer) {
+
             }
         }
 
