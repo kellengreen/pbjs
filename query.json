@@ -5,7 +5,9 @@
         "id": "120398",
         "fetch": {
             "id": null,
-            "name": null,
+            "name": {
+                "": 
+            },
             "description": null,
             "owner": {
                 "id": null,
