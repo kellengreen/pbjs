@@ -38,7 +38,7 @@
             }
         }
 
-        class Endianness {
+        class Endian {
             static isLittle() {
                 const buffer = new ArrayBuffer(2);
                 const view = new DataView(buffer);
@@ -46,8 +46,8 @@
                 return new Int16Array(buffer)[0] === 256;
             }
 
-            static isBig() {
-                
+            toLittle(bytes, buffer) {
+
             }
 
             static toBig(buffer) {
@@ -67,13 +67,13 @@
 
         }
 
-        const b = new ArrayBuffer(2);
+        const b = new ArrayBuffer(4);
         const v = new DataView(b);
-        v.setUint16(0, 256, false);
         const a = new Uint16Array(b);
-
-        // console.log(Endianness.isLittle());
-
+        v.setUint16(0, 258, false);
+        v.setUint16(2, 258, true);
+        console.log(`big:    ${a[0]}`);
+        console.log(`little: ${a[1]}`);
 
     </script>
 </head>
