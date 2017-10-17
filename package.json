@@ -1,7 +1,7 @@
 {
     "name": "pb.js",
-  	"version": "0.0.1",
-  	"private": true,
+    "version": "0.0.1",
+    "private": true,
     "devDependencies": {
         "gulp": "latest",
         "gulp-watch": "latest",
@@ -9,7 +9,11 @@
         "gulp-rename": "latest",
         "gulp-include": "latest"
     },
-    "scripts" : { 
-        "install" : "npm install -g gulp-cli && npm install -g http-server && npm install -g mocha"
+    "scripts": {
+        "server": "node node_modules/http-server/bin/http-server -c-1 2/"
+    },
+    "dependencies": {
+        "http": "0.0.0",
+        "http-server": "^0.10.0"
     }
 }

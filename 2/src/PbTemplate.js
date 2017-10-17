@@ -1,17 +1,26 @@
 import PbBase from './PbBase.js';
 
-class PbTemplatable extends PbBase {
+class PbTemplate extends PbBase {
     /**
      * Simple class to check for <template> tag
      */
     constructor() {
         super();
+        this._template = null;
+    }
+
+    /**
+     * 
+     */
+    connectedCallback() {
+        super();
 
         // require <template> element
-        this.$template = this.querySelector('template');
-        if (this.$template === null) {
+        const element = this.firstElementChild();
+        if ((element instanceof HTMLTemplateElement) === false) {
             throw new Error(`<template> was not found in ${this.tagName}`);
         }
+        this._template = element.cloneNode(true);
     }
 
     /**
@@ -20,7 +29,7 @@ class PbTemplatable extends PbBase {
      * @param {array} strings 
      * @param {...string} values 
      */
-    $sanitize() {
+    _sanitize() {
         const elem = document.createElement('p');
         let result = '';
         for (let i = 0; i < values.length; i++) {
@@ -32,4 +41,4 @@ class PbTemplatable extends PbBase {
     }
 }
 
-export default PbTemplatable;
+export default PbTemplate;
