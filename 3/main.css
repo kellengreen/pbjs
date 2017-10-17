@@ -1,0 +1,11 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    margin: 1rem;
+    color: hsl(0, 0%, 70%);
+    font-family: monospace;
+    background-color: hsl(0, 0%, 15%);
+}
