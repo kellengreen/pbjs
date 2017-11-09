@@ -1,22 +1,19 @@
-export default class Pb {
+/**
+ * 
+ */
+class Pb {
     /**
      * 
      */
     constructor() {
-        this.registeredConstructors = new Map();
-        this.registeredSelector = ``;
+        this.registrations = new Map();
         this.bodyObserver = null;
         
         this.whenDomIsReady(() => {
-            this.bodyObserver = this.getBodyObserver();
-            this.findRegisteredChildren(document.body);
+            // this.bodyObserver = this.getBodyObserver();
+            // this.findRegisteredChildren(document.body);
         });
     }
-
-    /**
-     * Class properties.
-     */
-    get idAttribute()   { return `pb-is`}
 
     /**
      * Let's us know when the DOM is ready to be worked on.
@@ -85,7 +82,7 @@ export default class Pb {
      * @returns {undefined}
      */
     register(tagName, constructor) {
-        this.registeredConstructors.set(tagName, constructor);
+        this.registrations.set(tagName, constructor);
         this.registeredSelector = this.getRegisteredSelector();
     }
 
@@ -105,8 +102,10 @@ export default class Pb {
     getRegisteredSelector() {
         const selectors = [];
         for (const tag of this.registeredConstructors.keys()) {
-            selectors.push(`[${this.idAttribute}="${tag}"]`);
+            selectors.push(tag);
         }
         return selectors.join(',');
     }
 }
+
+export default Pb;

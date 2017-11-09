@@ -4,17 +4,25 @@
     <meta charset="UTF-8">
     <title>pb.js</title>
     <link rel="stylesheet" href="main.css">
-    <script type="module" src="main.mjs"></script>
+    <script type="module" src="main.js"></script>
 </head>
 <body>
-    <pb-button>
-        <template>My Button</template>
-    </pb-button>
+    
+    <test-one foo="FOO" bar="BAR">
+        <p>Hello, ${name}.</p>
+        <p>World, ${planet}.</p>
+    </test-one>
+    <p>hello</p>
 
-    <button id="add">Add</button>
-    <button id="remove">Remove</button>
-    <button id="mod">Mod</button>
-    <div id="dest"></div>
+    <!--
+        <pb-base>
+        <pb-import>
+        <pb-for>
+        <pb-if>
+            <pb-elif>
+            <pb-else>
+        <pb-input>
+    -->
 
 </body>
 </html>

@@ -9,3 +9,12 @@ body {
     font-family: monospace;
     background-color: hsl(0, 0%, 15%);
 }
+
+body > * {
+    display: block;
+}  
+
+body > *:nth-child(odd) {
+    background-color: red;
+
+}
