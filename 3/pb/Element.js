@@ -9,34 +9,40 @@ class Element extends HTMLElement {
      */
     constructor() {
         super();
-
-        // Use symbol as to not muddy the HTMLElement namespace.
-        this[symbol] = {};
+        console.log('constructor');
     }
-
-    /**
-     * 
-     */
-    get manager() { return }
 
     /**
      * @returns {undefined}
      */
     connectedCallback() {
-
-        this[symbol].manager = new this.Manager(elem);
+        console.log('connected');
+        // this.parentElement.removeChild(this);
     }
 
     /**
      * @returns {undefined}
      */
     disconnectedCallback() {
-        const Manager = this.constructor[symbol].managers.get(this.tagName);
+        console.log('disconnected');
+    }
 
-        if (Manager !== undefined) {
-            const ghostElement = new GhostElement(this);
-            new Manager(ghostElement);
-        }
+    /**
+     * 
+     * @param {string} attrName
+     * @param {string} oldVal
+     * @param {string} newVal
+     * @returns {undefined}
+     */
+    attributeChangedCallback(attrName, oldVal, newVal) {
+        console.log('attributeChanged');
+    }
+    
+    /**
+     * @returns {undefined}
+     */
+    adoptedCallback() {
+        console.log('adopted');
     }
 }
 

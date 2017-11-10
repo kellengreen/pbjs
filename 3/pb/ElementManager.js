@@ -1,4 +1,5 @@
 
+import storage from './storage.js';
 
 class ElementManager {
     /**
@@ -6,7 +7,8 @@ class ElementManager {
      */
     constructor(element) {
         this.element = element;
-        this.render();
+        // this.render();
+        this.storage = storage;
     }
 
     /**
