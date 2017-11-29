@@ -24,12 +24,12 @@ class ProxyHandlers {
 /**
  * 
  */
-class Storage {
+class Pb {
     /**
-     * @param {object} object
+     * 
      */
-    constructor(object = {}) {
-        this.data = this.toProxy(object);
+    constructor(root) {
+        this.root = this.asProxy(root);
     }
 
     /**
@@ -129,7 +129,7 @@ class Storage {
      * @param {target}
      * @returns {proxy}
      */
-    toProxy(target = {}) {
+    asProxy(target = {}) {
         target[symbol] = new Map();
         return new Proxy(target, ProxyHandlers);
     }

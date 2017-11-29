@@ -1,3 +1,5 @@
 import Storage from './Storage.js';
-window.pb = new Storage();
-export default undefined;
+
+console.log('pb');
+const pb = new Pb();
+export default pb;
