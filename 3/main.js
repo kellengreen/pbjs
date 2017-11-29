@@ -1,15 +1,7 @@
 
 import Storage from './pb/Storage.js';
 
-const data = {};
-const storage = new Storage(data);
+window.pb = Storage.create();
 
-storage.listen('foo', (val) => {
-    console.log(`set: ${val}`);
-});
-
-
-storage.listen('foo', (val) => {
-    console.log(`set: ${val}`);
-});
-
+Storage.listen(window.pb, 'foo', val => {console.log('ALERT!')});
+window.pb.foo = 'x';
