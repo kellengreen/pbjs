@@ -1,0 +1,20 @@
+:root {
+  --white: hsl(0, 0%, 85%);
+  --black: hsl(0, 0%, 10%);
+  --red: hsl(0, 100%, 50%);
+}
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 1em;
+  color: var(--white);
+  background-color: var(--black);
+}
+
+a {
+  color: var(--white);
+}

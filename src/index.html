@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/app/icon.svg" />
+    <link rel="stylesheet" href="/app/main.css" />
+    <script type="module" src="/pb/pb.js"></script>
+    <script type="module" src="/pb/pb-json.js"></script>
+  </head>
+  <body>
+    <button onclick="history.pushState(null, '', '/a')">A</button>
+    <button onclick="history.pushState(null, '', '/b')">B</button>
+    <button onclick="history.pushState(null, '', '/c')">C</button>
+
+    <pb-route path="/a">
+      <template>
+        <p>A</p>
+      </template>
+    </pb-route>
+
+    <pb-route path="/b">
+      <template>
+        <p>B</p>
+      </template>
+    </pb-route>
+
+    <pb-route path="/c">
+      <template>
+        <p>C</p>
+        <pb-json
+          pg-global='{
+            "foo": "onFooChange",
+            "foo": "onFooChange",
+            "foo": "onFooChange"
+          }'
+          >JSON</pb-json
+        >
+      </template>
+    </pb-route>
+  </body>
+</html>

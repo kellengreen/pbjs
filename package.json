@@ -1,12 +1,13 @@
 {
-    "name": "pb.js",
-    "version": "0.0.1",
-    "private": true,
-    "scripts": {
-        "server": "node node_modules/http-server/bin/http-server -c-1 3/"
-    },
-    "devDependencies": {
-        "http-server": "latest"
-    },
-    "dependencies": {}
+  "name": "pbjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./server/index.js"
+  },
+  "author": "Kellen Green",
+  "license": "ISC",
+  "dependencies": {}
 }
