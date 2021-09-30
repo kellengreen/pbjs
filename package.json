@@ -1,13 +1,15 @@
 {
   "name": "pbjs",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "type": "module",
-  "scripts": {
-    "start": "node ./server/index.js"
-  },
-  "author": "Kellen Green",
+  "description": "",
+  "version": "1.0.0",
   "license": "ISC",
-  "dependencies": {}
+  "main": "index.js",
+  "scripts": {
+    "start": "python3 -m http.server",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "devDependencies": {
+    "jest": "^27.2.4"
+  }
 }
