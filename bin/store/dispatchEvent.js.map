@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/store/dispatchEvent.js"],
+  "sourcesContent": ["const handlers = {\n  /**\n   * @param {Object} target\n   * @param {string} property\n   * @param {Proxy} receiver\n   * @returns {*}\n   */\n  get: (target, property) => {\n    const result = Reflect.get(target, property);\n    if (result instanceof Function) {\n      return result.bind(target);\n    }\n    return result;\n  },\n\n  /**\n   * @param {Object} target\n   * @param {string} property\n   * @param {*} value\n   * @param {Proxy} receiver\n   * @returns {boolean}\n   */\n  set: (target, property, value) => {\n    const init = { detail: value };\n    const event = new CustomEvent(property, init);\n    target.dispatchEvent(event);\n    return Reflect.set(target, property, value);\n  },\n};\n\nexport default function store() {\n  const target = new EventTarget();\n  return new Proxy(target, handlers);\n}\n"],
+  "mappings": "AAAA,KAAM,GAAW,CAOf,IAAK,CAAC,EAAQ,IAAa,CACzB,KAAM,GAAS,QAAQ,IAAI,EAAQ,GACnC,MAAI,aAAkB,UACb,EAAO,KAAK,GAEd,GAUT,IAAK,CAAC,EAAQ,EAAU,IAAU,CAChC,KAAM,GAAO,CAAE,OAAQ,GACjB,EAAQ,GAAI,aAAY,EAAU,GACxC,SAAO,cAAc,GACd,QAAQ,IAAI,EAAQ,EAAU,KAIzC,2BAAgC,CAC9B,KAAM,GAAS,GAAI,aACnB,MAAO,IAAI,OAAM,EAAQ",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/app/AppRoot.js"],
+  "sourcesContent": ["import PbElement from \"../pb/PbElement.js\";\n\nimport html from \"../pb/tag/html.js\";\n\nexport default class AppRoot extends PbElement {\n  static style = `\n    div {\n      background-color: red;\n    }\n  `;\n\n  render() {\n    return html`\n      <slot></slot>\n      <div>\n        <label>Vote</label>\n        <button>CLICK ${0}</button>\n      </div>\n    `;\n  }\n}\n\nAppRoot.register();\n"],
+  "mappings": "AAAA,kCAEA,iCAEA,8BAAqC,EAAU,OACtC,OAAQ;AAAA;AAAA;AAAA;AAAA,IAMf,QAAS,CACP,MAAO;AAAA;AAAA;AAAA;AAAA,wBAIa;AAAA;AAAA,OAMxB,EAAQ",
+  "names": []
+}

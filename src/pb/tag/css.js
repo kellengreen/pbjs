@@ -6,8 +6,8 @@ import untag from "./untag.js";
  * @returns {CSSStyleSheet}
  */
 export default function css(strings, ...expressions) {
-  const str = untag(strings, ...expressions);
+  const result = untag(strings, ...expressions);
   const sheet = CSSStyleSheet.CSSStyleSheet();
-  sheet.replaceSync(str);
+  sheet.replaceSync(result);
   return sheet;
 }

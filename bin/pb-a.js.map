@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/pb/pb-a.js"],
+  "sourcesContent": ["export default class PbIf extends HTMLElement {\n  static name = \"pb-if\";\n  static observedAttributes = [\"cond\"];\n\n  constructor() {\n    super();\n  }\n\n  connectedCallback() {\n    console.log(\"connected\");\n    this.render();\n  }\n\n  disconnectedCallback() {\n    console.log(\"disconnected\");\n  }\n\n  adoptedCallback() {\n    console.log(\"adopted\");\n  }\n\n  attributeChangedCallback(name, oldValue, newValue) {\n    console.log(`${name}: ${oldValue} -> ${newValue}`);\n  }\n\n  render() {\n    // if () {\n    // }\n  }\n}\n\ncustomElements.define(PbIf.name, PbIf);\n"],
+  "mappings": "AAAA,8BAAkC,YAAY,OACrC,MAAO,cACP,oBAAqB,CAAC,QAE7B,aAAc,CACZ,QAGF,mBAAoB,CAClB,QAAQ,IAAI,aACZ,KAAK,SAGP,sBAAuB,CACrB,QAAQ,IAAI,gBAGd,iBAAkB,CAChB,QAAQ,IAAI,WAGd,yBAAyB,EAAM,EAAU,EAAU,CACjD,QAAQ,IAAI,GAAG,MAAS,QAAe,KAGzC,QAAS,GAMX,eAAe,OAAO,EAAK,KAAM",
+  "names": []
+}

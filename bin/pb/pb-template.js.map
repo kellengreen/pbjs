@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/pb/pb-template.js"],
+  "sourcesContent": ["import PbElement from \"./pb-element.js\";\n\nexport default class PbTemplate extends PbElement {\n  constructor() {\n    super();\n    this.state.template = this.firstElementChild;\n    if (!(this.state.template instanceof HTMLTemplateElement)) {\n      throw new Error(\"The first element must be a template\");\n    }\n  }\n}\n"],
+  "mappings": "AAAA,+BAEA,8BAAwC,EAAU,CAChD,aAAc,CACZ,QAEA,GADA,KAAK,MAAM,SAAW,KAAK,kBACvB,CAAE,MAAK,MAAM,mBAAoB,sBACnC,KAAM,IAAI,OAAM",
+  "names": []
+}

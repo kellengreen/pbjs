@@ -8,6 +8,7 @@ export default class AppRoot extends PbElement {
       background-color: red;
     }
   `;
+
   render() {
     return html`
       <slot></slot>

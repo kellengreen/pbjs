@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/pb/pb-element.js"],
+  "sourcesContent": ["import store from \"./store.js\";\n\nexport default class PbElement extends HTMLElement {\n  constructor() {\n    super();\n    this.state = store();\n  }\n\n  connectedCallback() {\n    console.log(\"connected\");\n  }\n\n  disconnectedCallback() {\n    console.log(\"disconnected\");\n  }\n\n  adoptedCallback() {\n    console.log(\"adopted\");\n  }\n\n  attributeChangedCallback(name, oldValue, newValue) {\n    console.log(`attributeChangedCallback [${name}=${newValue}]`);\n  }\n\n  render = () => {};\n}\n"],
+  "mappings": "AAAA,0BAEA,8BAAuC,YAAY,CACjD,aAAc,CACZ,QACA,KAAK,MAAQ,IAGf,mBAAoB,CAClB,QAAQ,IAAI,aAGd,sBAAuB,CACrB,QAAQ,IAAI,gBAGd,iBAAkB,CAChB,QAAQ,IAAI,WAGd,yBAAyB,EAAM,EAAU,EAAU,CACjD,QAAQ,IAAI,6BAA6B,KAAQ,MAGnD,OAAS,IAAM",
+  "names": []
+}

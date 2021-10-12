@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/pb/globalStore.js"],
+  "sourcesContent": ["import store from \"./store.js\";\n\nglobalThis.store = store();\n"],
+  "mappings": "AAAA,0BAEA,WAAW,MAAQ",
+  "names": []
+}

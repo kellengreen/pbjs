@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/pb/pb.js"],
+  "sourcesContent": ["import PbRoute from \"./pb-route.js\";\n\nconst stylesheet = new CSSStyleSheet();\n\nstylesheet.insertRule(`\n  ${PbRoute.name}\n  {\n    display: contents;\n  }\n`);\n\ndocument.adoptedStyleSheets = [...document.adoptedStyleSheets, stylesheet];\n"],
+  "mappings": "AAAA,6BAEA,KAAM,GAAa,GAAI,eAEvB,EAAW,WAAW;AAAA,IAClB,EAAQ;AAAA;AAAA;AAAA;AAAA,GAMZ,SAAS,mBAAqB,CAAC,GAAG,SAAS,mBAAoB",
+  "names": []
+}

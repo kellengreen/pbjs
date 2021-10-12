@@ -10,6 +10,6 @@ describe("untag tests", () => {
   });
 
   test("with undefined expression", () => {
-    expect(untag`foo${undefined}bar`).toBe("fooundefinedbar");
+    expect(untag`foo-${undefined}-bar`).toBe("foo-undefined-bar");
   });
 });

@@ -6,7 +6,8 @@ import untag from "./untag.js";
  * @returns {HTMLCollection}
  */
 export default function html(strings, ...expressions) {
-  const str = untag(strings, ...expressions);
-  const doc = new DOMParser().parseFromString(str, "text/html");
+  const result = untag(strings, ...expressions);
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(result, "text/html");
   return doc.body.children;
 }

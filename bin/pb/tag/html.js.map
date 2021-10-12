@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../src/pb/tag/html.js"],
+  "sourcesContent": ["import untag from \"./untag.js\";\n\n/**\n * @param {string[]} strings\n * @param  {*[]} expressions\n * @returns {HTMLCollection}\n */\nexport default function html(strings, ...expressions) {\n  const result = untag(strings, ...expressions);\n  const parser = new DOMParser();\n  const doc = parser.parseFromString(result, \"text/html\");\n  return doc.body.children;\n}\n"],
+  "mappings": "AAAA,0BAOA,0BAA6B,KAAY,EAAa,CACpD,KAAM,GAAS,EAAM,EAAS,GAAG,GAGjC,MAAO,AADK,AADG,IAAI,aACA,gBAAgB,EAAQ,aAChC,KAAK",
+  "names": []
+}
