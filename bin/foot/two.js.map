@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../src/foot/two.js"],
-  "sourcesContent": ["export default \"foo\";\n"],
-  "mappings": "AAAA,cAAe",
-  "names": []
-}

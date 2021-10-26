@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../src/pb/util/camelToKebab.js"],
-  "sourcesContent": ["/**\n * Converts a CamelCase string into a KebabCase one.\n * @param {string}\n * @returns {string}\n */\nexport default function camelToKebab(str) {\n  const arr = [...str];\n  arr.forEach((char, idx) => {\n    const lower = char.toLowerCase();\n    if (char !== lower) {\n      arr[idx] = (idx ? \"-\" : \"\") + lower;\n    }\n  });\n  return arr.join(\"\");\n}\n"],
-  "mappings": "AAKA,0BAAqC,EAAK,CACxC,KAAM,GAAM,CAAC,GAAG,GAChB,SAAI,QAAQ,CAAC,EAAM,IAAQ,CACzB,KAAM,GAAQ,EAAK,cACnB,AAAI,IAAS,GACX,GAAI,GAAQ,GAAM,IAAM,IAAM,KAG3B,EAAI,KAAK",
-  "names": []
-}

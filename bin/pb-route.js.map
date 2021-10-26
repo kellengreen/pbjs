@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../src/pb/pb-route.js"],
-  "sourcesContent": ["import {} from \"./PopStatePatch.js\";\nimport PbTemplate from \"./pb-template.js\";\n\nexport default class PbRoute extends PbTemplate {\n  static observedAttributes = [\"path\"];\n\n  connectedCallback() {\n    super.connectedCallback();\n    addEventListener(\"popstate\", this.render);\n  }\n\n  disconnectedCallback() {\n    super.disconnectedCallback();\n    removeEventListener(\"popstate\", this.render);\n  }\n\n  adoptedCallback() {\n    super.adoptedCallback();\n    console.log(\"adopted\");\n  }\n\n  attributeChangedCallback(name, oldValue, newValue) {\n    super.attributeChangedCallback(name, oldValue, newValue);\n    this.render();\n  }\n\n  render = () => {\n    console.log(this.state);\n    if (globalThis.location.pathname === this.getAttribute(\"path\")) {\n      this.innerHTML = this.state.template.innerHTML;\n    } else {\n      this.innerHTML = \"\";\n    }\n  };\n}\n\ncustomElements.define(\"pb-route\", PbRoute);\n"],
-  "mappings": "AAAA,2BACA,gCAEA,8BAAqC,EAAW,OACvC,oBAAqB,CAAC,QAE7B,mBAAoB,CAClB,MAAM,oBACN,iBAAiB,WAAY,KAAK,QAGpC,sBAAuB,CACrB,MAAM,uBACN,oBAAoB,WAAY,KAAK,QAGvC,iBAAkB,CAChB,MAAM,kBACN,QAAQ,IAAI,WAGd,yBAAyB,EAAM,EAAU,EAAU,CACjD,MAAM,yBAAyB,EAAM,EAAU,GAC/C,KAAK,SAGP,OAAS,IAAM,CACb,QAAQ,IAAI,KAAK,OACjB,AAAI,WAAW,SAAS,WAAa,KAAK,aAAa,QACrD,KAAK,UAAY,KAAK,MAAM,SAAS,UAErC,KAAK,UAAY,IAKvB,eAAe,OAAO,WAAY",
-  "names": []
-}

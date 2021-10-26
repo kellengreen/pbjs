@@ -1,0 +1,56 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="500"
+  height="200"
+>
+  <!-- 
+    * "x" and "y" are not geometry properties for <text> so transform is used.
+  -->
+  <style>
+    @font-face {
+      font-family: "Josefin Sans";
+      font-weight: 100 700;
+      font-style: normal;
+      src: url(./JosefinSans.ttf) format("truetype supports variations"),
+        url(./JosefinSans.ttf) format("truetype-variations");
+    }
+    :root {
+      --black: hsl(0, 0%, 10%);
+      --white: hsl(0, 0%, 90%);
+      --accent: hsl(130, 50%, 50%);
+      --weight: 600;
+    }
+    .bg {
+      fill: var(--black);
+      width: 100%;
+      height: 100%;
+    }
+    .chars {
+      font-family: "Josefin Sans", monospace;
+      fill: var(--white);
+      font-size: 8em;
+      font-variation-settings: "wght" var(--weight);
+      dominant-baseline: middle;
+      text-anchor: middle;
+      transform: translate(50%, 50%); 
+    }
+    .noselect {
+      user-select: none;
+    }
+    .dot {
+      fill: var(--accent);
+      clip-path: inset(0 0 66.66% 0);
+    }
+    .underscore {
+      fill: var(--accent);
+      height: 13px;
+      width: 135px;
+      x: calc(50% - 100px);
+      y: 50%;
+    }
+  </style>
+  <rect class="bg" />
+  <text class="chars">Pbjs</text>
+  <text class="chars noselect">Pb<tspan class="dot">j</tspan>s</text>
+  <rect class="underscore" />
+</svg>

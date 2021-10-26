@@ -1,4 +1,4 @@
-import {} from "./PopStatePatch.js";
+import {} from "./util/PopStatePatch.js";
 import PbTemplate from "./pb-template.js";
 
 export default class PbRoute extends PbTemplate {

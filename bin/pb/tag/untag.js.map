@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../src/pb/tag/untag.js"],
-  "sourcesContent": ["/**\n * Takes template tag arguments and returns the unaltered string.\n * hasOwnProperty is used since an expression could have evaluated as undefined.\n * @param {string[]} strings\n * @param  {*[]} expressions\n * @returns {string}\n */\nexport default function untag(strings, ...expressions) {\n  return strings.reduce((prev, curr, idx) => {\n    const expression = expressions.hasOwnProperty(idx) ? expressions[idx] : \"\";\n    return prev + curr + expression;\n  }, \"\");\n}\n"],
-  "mappings": "AAOA,0BAA8B,KAAY,EAAa,CACrD,MAAO,GAAQ,OAAO,CAAC,EAAM,EAAM,IAAQ,CACzC,KAAM,GAAa,EAAY,eAAe,GAAO,EAAY,GAAO,GACxE,MAAO,GAAO,EAAO,GACpB",
-  "names": []
-}

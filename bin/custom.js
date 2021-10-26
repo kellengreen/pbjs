@@ -1,2 +1,0 @@
-const store=new Store;store.set(["a","b","c"],10),store.get(["a","b","c"]),store.listen(["a","b","c"],()=>{}),store.ignore(["a","b","c"],()=>{}),store.a.b=10,store.a.b.c,store.a.b.c.listen(()=>{});class Node{constructor(e={}){this.parent=void 0,this.data=init,this.childListeners=new WeakMap}set(e,s){for(const n of e);}listen(e){}get(e){}}const listen=Symbol("listen"),ignore=Symbol("ignore"),listeners=Symbol("listeners"),parent=Symbol("parent");
-//# sourceMappingURL=custom.js.map

@@ -2,30 +2,41 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/app/icon.svg" />
     <link rel="stylesheet" href="/app/main.css" />
     <script type="module" src="/pb/pb.js"></script>
-    <script type="module" src="/pb/pb-json.js"></script>
   </head>
   <body>
-    <button onclick="history.pushState(null, '', '/a')">A</button>
-    <button onclick="history.pushState(null, '', '/b')">B</button>
-    <button onclick="history.pushState(null, '', '/c')">C</button>
+    <pb-a pb-href="/">
+      <button>HOME</button>
+    </pb-a>
 
-    <pb-route path="/a">
+    <pb-a pb-href="/a">
+      <button>A</button>
+    </pb-a>
+
+    <pb-a pb-href="/b">
+      <button>B</button>
+    </pb-a>
+
+    <pb-a pb-href="/c">
+      <button>C</button>
+    </pb-a>
+
+    <pb-route pb-path="/a">
       <template>
         <p>A</p>
       </template>
     </pb-route>
 
-    <pb-route path="/b">
+    <pb-route pb-path="/b">
       <template>
         <p>B</p>
       </template>
     </pb-route>
 
-    <pb-route path="/c">
+    <pb-route pb-path="/c">
       <template>
         <p>C</p>
         <pb-json

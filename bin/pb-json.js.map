@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../src/pb/pb-json.js"],
-  "sourcesContent": ["import {} from \"./globalStore.js\";\n\nexport default class PbJson extends HTMLElement {\n  static tag = \"pb-json\";\n  static observedAttributes = [\"json\"];\n\n  constructor() {\n    super();\n\n    this.style.display = \"content\";\n    this.shadow = this.attachShadow({ mode: \"open\" });\n\n    console.dir(this);\n  }\n\n  connectedCallback() {\n    console.log(\"connected\");\n    // this.innerHTML = `\n    //   <p>hello</p>\n    // `;\n  }\n\n  disconnectedCallback() {\n    console.log(\"disconnected\");\n  }\n\n  adoptedCallback() {\n    console.log(\"adopted\");\n  }\n\n  attributeChangedCallback(name, oldValue, newValue) {\n    if (name === \"listen\") {\n    }\n    console.log(`${name}: ${oldValue} -> ${newValue}`);\n  }\n\n  onClick = () => {};\n}\n\ncustomElements.define(PbJson.tag, PbJson);\n"],
-  "mappings": "AAAA,yBAEA,8BAAoC,YAAY,OACvC,KAAM,gBACN,oBAAqB,CAAC,QAE7B,aAAc,CACZ,QAEA,KAAK,MAAM,QAAU,UACrB,KAAK,OAAS,KAAK,aAAa,CAAE,KAAM,SAExC,QAAQ,IAAI,MAGd,mBAAoB,CAClB,QAAQ,IAAI,aAMd,sBAAuB,CACrB,QAAQ,IAAI,gBAGd,iBAAkB,CAChB,QAAQ,IAAI,WAGd,yBAAyB,EAAM,EAAU,EAAU,CAGjD,QAAQ,IAAI,GAAG,MAAS,QAAe,KAGzC,QAAU,IAAM,GAGlB,eAAe,OAAO,EAAO,IAAK",
-  "names": []
-}

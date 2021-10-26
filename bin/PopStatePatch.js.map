@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../src/pb/PopStatePatch.js"],
-  "sourcesContent": ["const pushState = history.pushState;\nhistory.pushState = function pushStateWrapper(...args) {\n  pushState.apply(history, args);\n  const evt = new PopStateEvent(\"popstate\");\n  dispatchEvent(evt);\n};\n\nconst replaceState = history.replaceState;\nhistory.replaceState = function replaceStateWrapper(...args) {\n  replaceState.apply(history, args);\n  const evt = new PopStateEvent(\"popstate\");\n  dispatchEvent(evt);\n};\n"],
-  "mappings": "AAAA,KAAM,WAAY,QAAQ,UAC1B,QAAQ,UAAY,YAA6B,EAAM,CACrD,UAAU,MAAM,QAAS,GACzB,KAAM,GAAM,GAAI,eAAc,YAC9B,cAAc,IAGhB,KAAM,cAAe,QAAQ,aAC7B,QAAQ,aAAe,YAAgC,EAAM,CAC3D,aAAa,MAAM,QAAS,GAC5B,KAAM,GAAM,GAAI,eAAc,YAC9B,cAAc",
-  "names": []
-}

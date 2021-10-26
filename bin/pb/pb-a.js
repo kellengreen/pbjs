@@ -1,2 +1,0 @@
-export default class e extends HTMLElement{static name="pb-if";static observedAttributes=["cond"];constructor(){super()}connectedCallback(){console.log("connected"),this.render()}disconnectedCallback(){console.log("disconnected")}adoptedCallback(){console.log("adopted")}attributeChangedCallback(t,o,c){console.log(`${t}: ${o} -> ${c}`)}render(){}}customElements.define(e.name,e);
-//# sourceMappingURL=pb-a.js.map
