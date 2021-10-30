@@ -1,12 +1,11 @@
 {
   "name": "pbjs",
   "type": "module",
-  "description": "",
-  "version": "1.0.0",
+  "version": "0.9.0",
   "license": "ISC",
   "main": "index.js",
   "scripts": {
-    "start": "http-server -c-1 -P http://localhost:8080? ./src",
+    "start": "http-server -c-1 --port 8080 --proxy http://127.0.0.1:8080? ./src",
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
     "compress": "npx esbuild ./src/**/(^*.test).js --minify --sourcemap --outdir=./bin",
     "find": "find ./src/foot -type 'f' -name '*.js' ! -name '*test.js'"

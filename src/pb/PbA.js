@@ -1,29 +1,28 @@
 import PbElement from "./PbElement.js";
-
-globalThis.addEventListener("popstate", (evt) => {
-  console.log(evt);
-});
+import history from "./util/history.js";
 
 export default class PbA extends PbElement {
-  static observedAttributes = ["pb-href", "pb-replace"];
+  static observedAttributes = [
+    ...this.observedAttributes,
+    "pb-href",
+    "pb-replace",
+  ];
 
   constructor() {
     super();
     this.addEventListener("click", (evt) => {
-      const data = null;
-      const title = "";
       const url = this.getAttribute("pb-href");
       const replace = this.getAttribute("pb-replace") !== null;
       if (replace) {
-        history.replaceState(data, title, url);
+        history.replaceState(null, "", url);
       } else {
-        history.pushState(data, title, url);
+        history.pushState(null, "", url);
       }
     });
   }
 
   connectedCallback() {
-    // this.render();
+    console.log(this);
   }
 
   disconnectedCallback() {}

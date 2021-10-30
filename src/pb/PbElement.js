@@ -1,5 +1,5 @@
 export default class PbElement extends HTMLElement {
-  static observedAttributes = [];
+  static observedAttributes = ["XXX"];
 
   constructor() {
     super();
