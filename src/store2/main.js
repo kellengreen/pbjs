@@ -1,6 +1,6 @@
 import ObjectProxy from "./ObjectProxy.js";
 
-const root = ObjectProxy();
+const root = ObjectProxy({});
 
 root.a = {
   b: [0, 1, 2],

@@ -11,9 +11,7 @@ export const handlers = {
   get(target, property, receiver) {
     console.log(`get: ${property.toString()}`);
 
-    const result = Reflect.get(target, property, receiver);
-
-    return result;
+    return Reflect.get(target, property, receiver);
   },
 
   /**
