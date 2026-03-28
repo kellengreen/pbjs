@@ -1,18 +1,16 @@
-// import {} from "./util/PopStatePatch.js";
 import PbTemplate from "./PbTemplate.js";
 
 export default class PbRoute extends PbTemplate {
-  static observedAttributes = ["pb-path"];
+  static observedAttributes = ["path"];
 
   connectedCallback() {
+    navigation.addEventListener("navigate", this.onNavigate);
     super.connectedCallback();
-    addEventListener("popstate", this.render);
-    this.render();
   }
 
   disconnectedCallback() {
+    navigation.removeEventListener("navigate", this.onNavigate);
     super.disconnectedCallback();
-    removeEventListener("popstate", this.render);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -21,11 +19,13 @@ export default class PbRoute extends PbTemplate {
 
   render = () => {
     this.textContent = "";
-    if (globalThis.location.pathname === this.getAttribute("pb-path")) {
+    if (globalThis.location.pathname === this.getAttribute("path")) {
       const clone = this.template.content.cloneNode(true);
       this.appendChild(clone);
     }
   };
-}
 
-customElements.define("pb-route", PbRoute);
+  onNavigate = (evt) => {
+    console.log(evt);
+  };
+}

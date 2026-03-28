@@ -1,53 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" href="/app/icon.svg" />
-    <link rel="stylesheet" href="/app/main.css" />
-    <script type="module" src="/pb/pb.js"></script>
-  </head>
-  <body>
-    <pb-a href="/" pb-replace>
-      <button>HOME</button>
-    </pb-a>
 
-    <pb-a pb-href="/a">
-      <button>A</button>
-    </pb-a>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <link rel="icon" href="/app/icon.svg" />
+  <link rel="stylesheet" href="/app/main.css" />
+  <script type="module" src="/pb/pb.js"></script>
+</head>
 
-    <pb-a pb-href="/b">
-      <button>B</button>
-    </pb-a>
+<body>
+  <pb-navigate to="/" replace>
+    <template>
+      <button>
+        <h1>HOME</h1>
+      </button>
+    </template>
+  </pb-navigate>
 
-    <pb-a pb-href="/c">
-      <button>C</button>
-    </pb-a>
+  <pb-navigate to="/a" replace>
+    <button>
+      <h1>A</h1>
+    </button>
+  </pb-navigate>
 
-    <pb-route pb-path="/a">
-      <template>
-        <p>A</p>
-      </template>
-    </pb-route>
+  <pb-navigate to="/b">
+    <button>
+      <h1>B</h1>
+    </button>
+  </pb-navigate>
 
-    <pb-route pb-path="/b">
-      <template>
-        <p>B</p>
-      </template>
-    </pb-route>
+  <pb-navigate to="/c">
+    <button>
+      <h1>C</h1>
+    </button>
+  </pb-navigate>
 
-    <pb-route pb-path="/c">
-      <template>
-        <p>C</p>
-        <pb-json
-          pg-global='{
+  <pb-route path="/a">
+    <template>
+      <p>A</p>
+    </template>
+  </pb-route>
+
+  <pb-route path="/b">
+    <template>
+      <p>B</p>
+    </template>
+  </pb-route>
+
+  <pb-route path="/c">
+    <template>
+      <p>C</p>
+      <pb-json pg-global='{
             "foo": "onFooChange",
             "foo": "onFooChange",
             "foo": "onFooChange"
-          }'
-          >JSON</pb-json
-        >
-      </template>
-    </pb-route>
-  </body>
+          }'>JSON</pb-json>
+    </template>
+  </pb-route>
+
+  <pb-template>
+    <template>
+      <p>this is a thing <span>same same</span>!</p>
+      <p>this also happend</p>
+    </template>
+  </pb-template>
+
+
+</body>
+
 </html>

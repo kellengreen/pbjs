@@ -13,6 +13,7 @@ body {
   margin: 1em;
   color: var(--white);
   background-color: var(--black);
+  font-family: monospace;
 }
 
 a {

@@ -1,6 +1,4 @@
 export default class PbElement extends HTMLElement {
-  static observedAttributes = ["XXX"];
-
   constructor() {
     super();
   }
@@ -13,6 +11,10 @@ export default class PbElement extends HTMLElement {
     console.log("disconnected");
   }
 
+  connectedMoveCallback() {
+    console.log("connectedMove");
+  }
+
   adoptedCallback() {
     console.log("adopted");
   }
@@ -21,5 +23,5 @@ export default class PbElement extends HTMLElement {
     console.log(`attributeChangedCallback [${name}=${newValue}]`);
   }
 
-  render = () => {};
+  onClick = () => {};
 }
