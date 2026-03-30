@@ -2,7 +2,7 @@ import { listeners } from "./symbol.js";
 
 /**
  * @this {Watchable}
- * @param {key} key
+ * @param {PropertyKey} key
  * @param {listener} listener
  * @returns {undefined}
  */
@@ -17,7 +17,7 @@ export function addListener(key, listener) {
 
 /**
  * @this {Watchable}
- * @param {key} key
+ * @param {PropertyKey} key
  * @param {listener} listener
  * @returns {undefined}
  */

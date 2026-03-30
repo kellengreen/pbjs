@@ -1,23 +1,21 @@
-import { listen, removeListener } from "./listeners.js";
-import { ignore, listeners, parent, wrapped } from "./symbol.js";
+import { addListener, removeListener } from "./listeners.js";
+import {
+  ignore,
+  listeners,
+  listen,
+  parent,
+  wrapped,
+  get,
+  set,
+  del,
+} from "./symbol.js";
 
 const handlers = {
   /**
    * @param {Object} target
-   * @param {key} property
-   * @param {unknown} receiver
-   * @returns {any}
-   */
-  get(target, property, receiver) {
-    console.log(`get: ${property.toString()}`);
-    return Reflect.get(target, property, receiver);
-  },
-
-  /**
-   * @param {Object} target
-   * @param {key} property
+   * @param {PropertyKey} property
    * @param {any} value
-   * @param {Proxy} receiver
+   * @param {any} receiver
    * @returns {boolean}
    */
   set(target, property, value, receiver) {
@@ -40,10 +38,12 @@ const handlers = {
 
   /**
    * @param {Object} target
-   * @param {key} property
+   * @param {PropertyKey} property
    * @returns {boolean}
    */
   deleteProperty(target, property) {
+    target[listeners];
+
     return Reflect.deleteProperty(target, property);
   },
 };
