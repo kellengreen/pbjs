@@ -1,6 +1,10 @@
 // listeners
 export const listen = Symbol("listen");
 export const ignore = Symbol("ignore");
+
+/**
+ * @type {unique symbol}
+ */
 export const listeners = Symbol("listeners");
 export const parent = Symbol("parent");
 

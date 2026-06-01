@@ -10,7 +10,9 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
     "test:ci": "NODE_OPTIONS=--experimental-vm-modules jest",
     "format": "prettier --check ./src/",
-    "format:fix": "prettier --write ./src/**"
+    "format:fix": "prettier --write ./src/**",
+    "typecheck": "tsc --watch",
+    "typecheck:ci": "tsc"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",

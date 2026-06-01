@@ -50,10 +50,10 @@ const handlers = {
 
 /**
  * @param {Object} target
- * @param {null|[Object, key]} parent
+ * @param {null|[Object, PropertyKey]} parentKv
  * @returns {Object}
  */
-export default function wrap(target = {}, parentKV = null) {
+export default function wrap(target = {}, parentKv = null) {
   Object.defineProperties(target, {
     [wrapped]: {
       value: true,
@@ -68,7 +68,7 @@ export default function wrap(target = {}, parentKV = null) {
       value: new Map(),
     },
     [parent]: {
-      value: parentKV,
+      value: parentKv,
       writable: true,
     },
     [get]: {

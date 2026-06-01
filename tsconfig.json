@@ -7,6 +7,6 @@
         "lib": ["ES7", "DOM"],
     },
     "include": [
-        "src/pb/**/*.js", "src/pb/store/types.js",
+        "src/pb/**/*.js", "src/pb/store/types.d.js",
     ],
 }
